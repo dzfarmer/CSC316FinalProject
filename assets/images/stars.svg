@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+  <rect width="900" height="600" fill="none"/>
+  <g fill="#ffffff" fill-opacity="0.85">
+    <circle cx="60" cy="80" r="2.2"/><circle cx="140" cy="200" r="1.8"/><circle cx="210" cy="120" r="2.6"/>
+    <circle cx="310" cy="90" r="1.7"/><circle cx="420" cy="180" r="2.3"/><circle cx="520" cy="70" r="1.6"/>
+    <circle cx="640" cy="140" r="2.5"/><circle cx="760" cy="110" r="1.8"/><circle cx="840" cy="190" r="2.2"/>
+    <circle cx="90" cy="330" r="2.3"/><circle cx="210" cy="420" r="1.7"/><circle cx="340" cy="360" r="2.7"/>
+    <circle cx="470" cy="470" r="1.9"/><circle cx="600" cy="380" r="2.2"/><circle cx="720" cy="440" r="1.7"/>
+    <circle cx="820" cy="340" r="2.5"/><circle cx="120" cy="520" r="1.8"/><circle cx="780" cy="520" r="2.1"/>
+  </g>
+  <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.4" fill="none">
+    <path d="M140 200 l6 -6 l6 6 l-6 6 z"/>
+    <path d="M640 140 l5 -5 l5 5 l-5 5 z"/>
+    <path d="M340 360 l6 -6 l6 6 l-6 6 z"/>
+    <path d="M820 340 l5 -5 l5 5 l-5 5 z"/>
+  </g>
+</svg>

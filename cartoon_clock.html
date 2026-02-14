@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sleep Analysis - Cartoon Edition</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Cartoon Theme Variables --- */
+        :root {
+            --bg-color: #2c3e50;
+            --card-bg: #34495e;
+            --border-color: #000000;
+            --text-color: #ecf0f1;
+            --accent-yellow: #f1c40f;
+            --accent-blue: #3498db;
+            --pop-shadow: 4px 4px 0px #000000; /* Comic book shadow */
+            
+            /* Status Colors (Pastel/Bright) */
+            --color-good: #2ecc71;
+            --color-bad: #e74c3c;
+            --color-neutral: #95a5a6;
+        }
+
+        body { 
+            font-family: 'Fredoka', sans-serif; 
+            background-color: #2c3e50;
+            /* Simple vector pattern background */
+            background-image: radial-gradient(#3d566e 15%, transparent 16%), radial-gradient(#3d566e 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            color: var(--text-color);
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 40px 20px; 
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- CARTOON ELEMENTS --- */
+        
+        /* Floating Clouds */
+        .cloud {
+            position: absolute;
+            background: #fff;
+            border-radius: 100px;
+            opacity: 0.1;
+            animation: floatCloud linear infinite;
+            z-index: -1;
+        }
+        .cloud::after, .cloud::before {
+            content: ''; position: absolute; background: inherit; border-radius: 50%;
+        }
+        .cloud::after { width: 30%; height: 60%; top: -30%; left: 15%; }
+        .cloud::before { width: 40%; height: 80%; top: -40%; right: 15%; }
+        
+        @keyframes floatCloud {
+            from { transform: translateX(-200px); }
+            to { transform: translateX(100vw); }
+        }
+
+        /* Cartoon Stars */
+        .toon-star {
+            position: absolute;
+            width: 0; height: 0;
+            border-right: 10px solid transparent;
+            border-bottom: 7px solid var(--accent-yellow);
+            border-left: 10px solid transparent;
+            transform: rotate(35deg);
+            z-index: -1;
+            animation: bounceStar 3s infinite ease-in-out;
+            filter: drop-shadow(2px 2px 0px #000);
+        }
+        .toon-star:before {
+            border-bottom: 8px solid var(--accent-yellow);
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+            position: absolute;
+            height: 0; width: 0;
+            top: -4.5px; left: -6.5px;
+            display: block; content: '';
+            transform: rotate(-35deg);
+        }
+        .toon-star:after {
+            position: absolute; display: block; top: 0.3px; left: -10.5px;
+            width: 0; height: 0;
+            border-right: 10px solid transparent;
+            border-bottom: 7px solid var(--accent-yellow);
+            border-left: 10px solid transparent;
+            transform: rotate(-70deg); content: '';
+        }
+        @keyframes bounceStar {
+            0%, 100% { transform: rotate(35deg) scale(0.8); }
+            50% { transform: rotate(35deg) scale(1.1); }
+        }
+
+        /* --- DASHBOARD CONTAINER --- */
+        .dashboard { 
+            background: var(--text-color); /* White/Light card */
+            color: #2c3e50; /* Dark text inside */
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 4px solid var(--border-color);
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.3);
+            text-align: center; 
+            max-width: 900px; 
+            width: 100%; 
+            position: relative;
+            z-index: 10;
+        }
+        
+        h1 { 
+            margin: 0; 
+            font-size: 36px; 
+            color: #2c3e50;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #bdc3c7;
+        }
+        p.subtitle { color: #7f8c8d; margin-bottom: 30px; font-size: 16px; font-weight: 600; }
+
+        /* --- CONTROLS --- */
+        .toggle-container {
+            background: #ecf0f1; 
+            padding: 6px; 
+            border-radius: 12px;
+            border: 3px solid var(--border-color);
+            display: inline-flex; gap: 4px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        }
+        .toggle-btn {
+            background: transparent; border: none; color: #7f8c8d;
+            padding: 10px 20px; font-size: 14px; font-weight: 700;
+            border-radius: 8px; cursor: pointer; font-family: 'Fredoka', sans-serif;
+            transition: all 0.2s;
+        }
+        .toggle-btn:hover { background: #bdc3c7; color: #000; }
+        .toggle-btn.active {
+            background: var(--accent-blue); color: #fff;
+            border: 2px solid #000;
+            transform: translateY(-2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        /* --- CHARTS --- */
+        .charts-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 50px; margin-bottom: 40px; margin-top: 20px; }
+        .clock-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; }
+        .clock-label { 
+            margin-top: 15px; font-weight: 700; font-size: 18px; color: #2c3e50;
+            background: #f1c40f; padding: 5px 15px; border-radius: 20px;
+            border: 3px solid #000; box-shadow: 3px 3px 0px #000;
+        }
+
+        /* --- STATS GRID --- */
+        .stats-section-title { 
+            text-align: center; margin: 30px 0 20px 0;
+            font-size: 20px; color: #2c3e50; font-weight: 800;
+            text-decoration: underline wavy var(--accent-yellow);
+        }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px; padding: 0 10px;
+        }
+        .stat-card {
+            background: #fff; 
+            padding: 15px; 
+            border-radius: 15px;
+            border: 3px solid #000;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+            text-align: left;
+            position: relative; overflow: hidden;
+        }
+        .stat-card:hover { transform: scale(1.05) rotate(-2deg); }
+        /* Decorative stripe */
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 8px;
+            background: var(--accent-blue);
+        }
+        
+        .stat-label { font-size: 14px; color: #7f8c8d; font-weight: 700; margin-top: 5px; }
+        .stat-value { font-size: 28px; font-weight: 800; color: #2c3e50; margin: 5px 0; }
+        .stat-desc { font-size: 12px; color: #95a5a6; line-height: 1.2; font-weight: 600; }
+
+        .indicator { 
+            display: inline-block; padding: 4px 10px; border-radius: 20px; 
+            font-size: 12px; font-weight: 700; margin-top: 5px; color: #fff;
+            border: 2px solid #000;
+        }
+        .ind-red { background: var(--color-bad); }
+        .ind-green { background: var(--color-good); }
+        .ind-neutral { background: var(--color-neutral); }
+
+        /* Emoji Icons for Stats */
+        .stat-emoji { font-size: 24px; position: absolute; top: 15px; right: 15px; opacity: 0.8; }
+
+        /* --- SVG STYLING --- */
+        /* Clock Face */
+        .clock-circle { fill: #fff; stroke: #000; stroke-width: 4px; }
+        .clock-tick { stroke: #bdc3c7; stroke-width: 2px; stroke-linecap: round; }
+        .clock-num { font-family: 'Fredoka', sans-serif; font-weight: 700; fill: #2c3e50; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
+        
+        /* Sectors */
+        path.sector { 
+            stroke: #000; stroke-width: 2px; 
+            transition: d 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045), fill 0.3s;
+            cursor: pointer;
+        }
+        path.sector:hover { stroke-width: 4px; filter: brightness(1.1); }
+
+        /* Tooltip */
+        .tooltip { 
+            position: absolute; background: #fff; color: #000; 
+            padding: 10px 15px; border-radius: 12px; pointer-events: none; 
+            font-size: 14px; opacity: 0; transition: 0.2s; 
+            border: 3px solid #000; box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            z-index: 100; font-weight: 600; font-family: 'Fredoka', sans-serif;
+            transform: translate(-50%, -120%);
+        }
+
+        /* Legend */
+        .legend-container { margin-top: 30px; padding-top: 20px; border-top: 3px dashed #bdc3c7; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; }
+        .legend-title { font-size: 14px; color: #2c3e50; margin-bottom: 5px; font-weight: 700; }
+        .legend-bar-border { fill: none; stroke: #000; stroke-width: 2px; rx: 10; }
+        .legend-axis text { font-family: 'Fredoka', sans-serif; font-weight: 600; fill: #7f8c8d; }
+
+    </style>
+</head>
+<body>
+
+<div id="clouds"></div>
+<div id="stars"></div>
+
+<div class="dashboard">
+    <h1>Sleepy Time</h1>
+    <p class="subtitle">A cartoon look at our zzz's and habits!</p>
+    
+    <div class="controls">
+        <div class="toggle-container">
+            <button class="toggle-btn active" data-val="all">Everyone</button>
+            <button class="toggle-btn" data-val="weekday_sleeper">Week-day Sleepers</button>
+            <button class="toggle-btn" data-val="stable">Regular Sleepers</button>
+            <button class="toggle-btn" data-val="weekend_sleeper">Weekend Sleepers</button>
+        </div>
+    </div>
+
+    <div class="charts-container">
+        <div class="clock-wrapper">
+            <div id="chart-weekday"></div>
+            <div class="clock-label">Weekday 🏢</div>
+        </div>
+        <div class="clock-wrapper">
+            <div id="chart-weekend"></div>
+            <div class="clock-label">Weekend 🎡</div>
+        </div>
+    </div>
+
+    <div class="stats-section-title">⏰ The Sleep Schedule</div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-emoji">🌙</div>
+            <div class="stat-label">Bedtime Shift</div>
+            <div class="stat-value" id="stat-bedtime">--</div>
+            <div class="stat-desc">Diff from Mon to Sun</div>
+            <div class="indicator" id="ind-bedtime">--</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-emoji">☀️</div>
+            <div class="stat-label">Wake-up Shift</div>
+            <div class="stat-value" id="stat-wake">--</div>
+            <div class="stat-desc">Diff from Mon to Sun</div>
+            <div class="indicator" id="ind-wake">--</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-emoji">🔋</div>
+            <div class="stat-label">Net Sleep</div>
+            <div class="stat-value" id="stat-duration">--</div>
+            <div class="stat-desc">Extra sleep on weekend</div>
+            <div class="indicator" id="ind-duration">--</div>
+        </div>
+    </div>
+
+    <div class="stats-section-title">🍕 Habits & Quirks</div>
+    <div class="stats-grid">
+        <div class="stat-card" style="border-color:#d35400;">
+            <div class="stat-emoji">☕</div>
+            <div class="stat-label">Caffeine</div>
+            <div class="stat-value" id="stat-caffeine">--</div>
+            <div class="stat-desc">Daily intake (mg)</div>
+        </div>
+        <div class="stat-card" style="border-color:#8e44ad;">
+            <div class="stat-emoji">😴</div>
+            <div class="stat-label">Snore Score</div>
+            <div class="stat-value" id="stat-snore">--</div>
+            <div class="stat-desc">How often they snore (0-4)</div>
+        </div>
+        <div class="stat-card" style="border-color:#27ae60;">
+            <div class="stat-emoji">🥔</div>
+            <div class="stat-label">Lazy Time</div>
+            <div class="stat-value" id="stat-sedentary">--</div>
+            <div class="stat-desc">Sitting mins/day</div>
+        </div>
+    </div>
+
+    <div class="legend-container">
+        <div class="legend-title">Trouble Sleeping Rate (Blue=Good, Red=Bad)</div>
+        <div id="legend"></div>
+    </div>
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<script>
+    // --- 1. CARTOON BACKGROUND GEN ---
+    const cloudContainer = document.getElementById('clouds');
+    for(let i=0; i<5; i++){
+        const c = document.createElement('div');
+        c.className = 'cloud';
+        c.style.top = Math.random()*80 + '%';
+        c.style.width = (Math.random()*100 + 100) + 'px';
+        c.style.height = (Math.random()*40 + 40) + 'px';
+        c.style.animationDuration = (Math.random()*20 + 20) + 's';
+        cloudContainer.appendChild(c);
+    }
+
+    const starContainer = document.getElementById('stars');
+    for(let i=0; i<20; i++){
+        const s = document.createElement('div');
+        s.className = 'toon-star';
+        s.style.left = Math.random()*95 + '%';
+        s.style.top = Math.random()*95 + '%';
+        const scale = Math.random() * 0.5 + 0.5;
+        s.style.transform = `scale(${scale}) rotate(35deg)`;
+        s.style.animationDelay = Math.random()*2 + 's';
+        starContainer.appendChild(s);
+    }
+
+    // --- 2. D3 SETUP ---
+    const width = 300, height = 300; 
+    const margin = 40; 
+    const radius = width / 2 - margin;
+    const cornerRadius = 20; // Super rounded sectors
+
+    // Brighter, pop colors for the scale? 
+    // Let's stick to the Red-Blue logic but maybe adjust domain to pop more
+    const colorScale = d3.scaleSequential(d3.interpolateRdYlBu).domain([0.35, 0.15]); 
+
+    const angleScale = d3.scaleLinear().domain([0, 24]).range([0, 2 * Math.PI]);
+    const tooltip = d3.select("#tooltip");
+
+    // Helpers
+    function parseTime(str) {
+        if (!str || str === "NaN") return null;
+        const s = str.replace(/[b']/g, "");
+        const [h, m] = s.split(":").map(Number);
+        return h + (m / 60);
+    }
+    function getTimeDiff(t1, t2) {
+        let diff = t2 - t1;
+        if (diff > 12) diff -= 24;
+        if (diff < -12) diff += 24;
+        return diff;
+    }
+    function formatTimeDiff(hours) {
+        const sign = hours >= 0 ? "+" : "-";
+        const h = Math.floor(Math.abs(hours));
+        const m = Math.round((Math.abs(hours) % 1) * 60);
+        if (h === 0 && m === 0) return "Same";
+        return `${sign}${h}h ${m}m`;
+    }
+    function getSleepCategory(d) {
+        const wkday = parseFloat(d.sleep_hours_weekday);
+        const wkend = parseFloat(d.sleep_hours_weekend);
+        if (isNaN(wkday) || isNaN(wkend)) return null;
+        const diff = wkend - wkday; 
+        if (Math.abs(diff) <= 1.0) return "stable";
+        if (diff > 1.0) return "weekend_sleeper";
+        if (diff < -1.0) return "weekday_sleeper";
+        return "stable";
+    }
+
+    // --- 3. COMPONENTS ---
+    function createLegend() {
+        const w = 250, h = 15;
+        d3.select("#legend").selectAll("*").remove();
+        const svg = d3.select("#legend").append("svg").attr("width", w + 40).attr("height", 50);
+        
+        const defs = svg.append("defs");
+        const gradient = defs.append("linearGradient").attr("id", "legend-grad").attr("x1", "0%").attr("x2", "100%");
+        const stops = 10;
+        for (let i = 0; i <= stops; i++) {
+            const val = 0.20 + (i/stops) * 0.10; 
+            gradient.append("stop").attr("offset", (i/stops)*100 + "%").attr("stop-color", colorScale(val));
+        }
+
+        // Draw rect with thick border
+        svg.append("rect")
+            .attr("width", w).attr("height", h).attr("x", 20).attr("rx", h/2)
+            .style("fill", "url(#legend-grad)")
+            .style("stroke", "#000").style("stroke-width", "2px");
+
+        const axisScale = d3.scaleLinear().domain([0.20, 0.30]).range([0, w]);
+        const axis = d3.axisBottom(axisScale).ticks(5).tickFormat(d => Math.round(d * 100) + "%");
+        svg.append("g").attr("class", "legend-axis").attr("transform", `translate(20, ${h+8})`).call(axis);
+    }
+
+    function initClock(containerId) {
+        d3.select(containerId).selectAll("*").remove();
+        const svg = d3.select(containerId).append("svg").attr("width", width).attr("height", height).append("g").attr("transform", `translate(${width/2},${height/2})`);
+
+        // Cartoon Clock Face: Thick border
+        svg.append("circle").attr("r", radius).attr("class", "clock-circle");
+
+        // Ticks
+        d3.range(0, 24).forEach(h => {
+            const angle = angleScale(h) - Math.PI/2;
+            const rMark = radius - 5;
+            const rText = radius + 15;
+            const isMajor = h % 6 === 0;
+
+            svg.append("line")
+                .attr("x1", Math.cos(angle) * radius)
+                .attr("y1", Math.sin(angle) * radius)
+                .attr("x2", Math.cos(angle) * (radius - (isMajor?10:5)))
+                .attr("y2", Math.sin(angle) * (radius - (isMajor?10:5)))
+                .attr("class", "clock-tick");
+
+            if (isMajor || h % 2 === 0) {
+                svg.append("text")
+                    .attr("x", Math.cos(angle) * rText)
+                    .attr("y", Math.sin(angle) * rText)
+                    .attr("class", "clock-num")
+                    .text(h);
+            }
+        });
+
+        svg.append("text").attr("y", -radius - 25).attr("text-anchor", "middle")
+            .style("font-size", "12px").style("fill", "#95a5a6").style("font-weight", "bold")
+            .text("MIDNIGHT");
+
+        return svg.append("g").attr("class", "data-layer");
+    }
+
+    function updateStats(metrics, rawData) {
+        const wd = metrics[0];
+        const we = metrics[1];
+        if (!wd || !we) return;
+
+        // Shift Stats
+        const bedDiff = getTimeDiff(wd.start, we.start);
+        d3.select("#stat-bedtime").text(formatTimeDiff(bedDiff));
+        const bedInd = d3.select("#ind-bedtime");
+        if (Math.abs(bedDiff) < 0.5) { bedInd.text("Same-ish").attr("class", "indicator ind-neutral"); }
+        else if (bedDiff > 0) { bedInd.text("Later").attr("class", "indicator ind-red"); }
+        else { bedInd.text("Earlier").attr("class", "indicator ind-green"); }
+
+        const wakeDiff = getTimeDiff(wd.end, we.end);
+        d3.select("#stat-wake").text(formatTimeDiff(wakeDiff));
+        const wakeInd = d3.select("#ind-wake");
+        if (Math.abs(wakeDiff) < 0.5) { wakeInd.text("Same-ish").attr("class", "indicator ind-neutral"); }
+        else if (wakeDiff > 0) { wakeInd.text("Sleeping In").attr("class", "indicator ind-red"); } 
+        else { wakeInd.text("Up Early").attr("class", "indicator ind-green"); }
+
+        const durWd = (wd.end < wd.start ? wd.end + 24 : wd.end) - wd.start;
+        const durWe = (we.end < we.start ? we.end + 24 : we.end) - we.start;
+        const durDiff = durWe - durWd;
+        d3.select("#stat-duration").text(formatTimeDiff(durDiff));
+        const durInd = d3.select("#ind-duration");
+        if (Math.abs(durDiff) < 0.5) { durInd.text("Equal").attr("class", "indicator ind-neutral"); }
+        else if (durDiff > 0) { durInd.text("Catch-up").attr("class", "indicator ind-green"); }
+        else { durInd.text("Less").attr("class", "indicator ind-red"); }
+
+        // NEW STATS
+        // Caffeine
+        const avgCaffeine = d3.mean(rawData, d => +d.caffeine_mg_day1 || 0);
+        d3.select("#stat-caffeine").text(Math.round(avgCaffeine));
+
+        // Snore Frequency (assuming 0-4 scale or similiar in data)
+        const avgSnore = d3.mean(rawData, d => +d.snore_frequency || 0);
+        d3.select("#stat-snore").text(avgSnore ? avgSnore.toFixed(1) : "?");
+
+        // Sedentary Minutes
+        const avgSed = d3.mean(rawData, d => +d.minutes_sedentary_per_day || 0);
+        d3.select("#stat-sedentary").text(Math.round(avgSed));
+    }
+
+    // --- 4. MAIN ---
+    d3.csv("data/nhanes_2017_mar2020_sleep_merged_extended_clean_with_caffeine.csv").then(data => {
+        data.forEach(d => d.category = getSleepCategory(d));
+        createLegend();
+        const gWeekday = initClock("#chart-weekday");
+        const gWeekend = initClock("#chart-weekend");
+
+        const updateViz = (groupId) => {
+            const filtered = (groupId === "all") ? data : data.filter(d => d.category === groupId);
+
+            const metrics = ["weekday", "weekend"].map(type => {
+                const sCol = `usual_sleep_time_${type}_hhmm`;
+                const wCol = `usual_wake_time_${type}_hhmm`;
+                const valid = filtered.filter(d => d[sCol] && d[wCol]);
+                if (!valid.length) return null;
+                const processTime = (t) => t < 12 ? t + 24 : t;
+                const avgStart = d3.mean(valid, d => processTime(parseTime(d[sCol])));
+                const avgEnd = d3.mean(valid, d => processTime(parseTime(d[wCol])));
+                const trouble = d3.mean(valid, d => d.told_doctor_trouble_sleeping == 1 ? 1 : 0);
+                return { type, start: avgStart%24, end: avgEnd%24, rate: trouble };
+            });
+
+            updateStats(metrics, filtered);
+
+            const draw = (selection, d) => {
+                if (!d) { selection.selectAll(".sector").remove(); return; }
+                const arc = d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(radius - 10)
+                    .cornerRadius(cornerRadius)
+                    .startAngle(angleScale(d.start))
+                    .endAngle(() => {
+                        let e = angleScale(d.end);
+                        if (d.end < d.start) e += 2*Math.PI;
+                        return e;
+                    });
+
+                const paths = selection.selectAll(".sector").data([d]);
+                paths.join(
+                    enter => enter.append("path").attr("class", "sector").attr("d", arc).attr("fill", colorScale(d.rate))
+                        .style("opacity", 0).call(enter => enter.transition().duration(800).style("opacity", 1)),
+                    update => update.transition().duration(800).attr("d", arc).attr("fill", colorScale(d.rate))
+                )
+                .on("mouseover", (e, datum) => {
+                    const fmt = t => `${Math.floor(t)}:${Math.round((t%1)*60).toString().padStart(2,'0')}`;
+                    const dur = (datum.end < datum.start ? datum.end+24 : datum.end) - datum.start;
+                    tooltip.style("opacity", 1)
+                        .html(`<div><strong>${datum.type.toUpperCase()}</strong></div>
+                               <div>🛏️ ${fmt(datum.start)} - ${fmt(datum.end)}</div>
+                               <div>⏳ ${dur.toFixed(1)} hrs</div>
+                               <div style="margin-top:5px; color:${d3.interpolateRdYlBu(1-(datum.rate-0.15)/0.2)}">
+                                  Rate: ${(datum.rate*100).toFixed(1)}%
+                               </div>`);
+                })
+                .on("mousemove", e => tooltip.style("left", e.pageX+"px").style("top", e.pageY+"px"))
+                .on("mouseout", () => tooltip.style("opacity", 0));
+            };
+            draw(gWeekday, metrics[0]);
+            draw(gWeekend, metrics[1]);
+        };
+
+        d3.selectAll(".toggle-btn").on("click", function() {
+            d3.selectAll(".toggle-btn").classed("active", false);
+            d3.select(this).classed("active", true);
+            updateViz(d3.select(this).attr("data-val"));
+        });
+
+        updateViz("all");
+    });
+</script>
+</body>
+</html>

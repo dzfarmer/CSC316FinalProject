@@ -176,41 +176,43 @@
     </section>
 
     <!-- 5) Visualization page 2 -->
-    <section id="viz2" class="panel bg-lavender">
-      <div class="container">
-        <div class="section-head">
-          <h2>Visualization 2</h2>
-          <p class="muted">Placeholder: Screen time before bed vs time to fall asleep</p>
-        </div>
+      <!-- 5) Visualization page 2 -->
+      <section id="viz2" class="panel bg-lavender">
+          <div class="container">
+              <div class="section-head">
+                  <h2>Visualization 2</h2>
+                  <p class="muted">
+                      Caffeine level × Weekly average sleep × Sleep trouble rate
+                  </p>
+              </div>
 
-        <div class="viz-grid">
-          <div class="card viz-card">
-            <div class="viz-toolbar">
-              <span class="pill">Chart placeholder</span>
-</div>
+              <div class="viz-grid">
+                  <div class="card viz-card">
+                      <div class="viz-toolbar">
+                          <span class="pill">Interactive Heatmap</span>
+                      </div>
 
-            <div class="chart" data-chart="2" role="img" aria-label="Placeholder chart for visualization 2">
-              <canvas width="980" height="420"></canvas>
-            </div>
-</div>
+                      <!-- 🔥 D3 Heatmap -->
+                      <div class="chart heatmap-wrap" id="caffeine-heatmap"
+                           role="img"
+                           aria-label="Heatmap of caffeine level vs sleep category showing trouble sleeping rate">
 
-          <!-- <div class="card">
-            <h3>Optional caption ideas</h3>
-            <ul class="bullets">
-              <li>Average sleep latency by screen time group</li>
-              <li>Night-by-night line chart</li>
-              <li>Annotate late homework or gaming nights</li>
-            </ul>
+                          <svg id="chart" width="980" height="520"></svg>
 
-            <div class="note">
-              <strong>Image idea:</strong> phone + moon icon, or a cozy bedside photo.
-            </div>
-          </div> -->
-        </div>
-      </div>
-    </section>
+                          <div class="heatmap-controls">
+                              <div class="controls-title">Toggle: Age</div>
+                              <select id="ageSelect" multiple size="3"></select>
+                              <div class="controls-hint">Cmd/Ctrl to select more</div>
+                          </div>
 
-    <!-- 6) Insight text page 2 -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+
+      <!-- 6) Insight text page 2 -->
     <section id="insight2" class="panel bg-sunbeam">
       <div class="container">
         <div class="quote-card">
@@ -491,6 +493,10 @@
       </div>
     </section>
   </main>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="js/caffeineHeatmap.js"></script>
+<script src="js/main.js"></script>
 
   <script src="js/main.js"></script>
   <script src="js/sleep-score.js"></script>

@@ -197,14 +197,15 @@
                            role="img"
                            aria-label="Heatmap of caffeine level vs sleep category showing trouble sleeping rate">
 
-                          <svg id="chart" width="980" height="520"></svg>
-
-                          <div class="heatmap-controls">
-                              <div class="controls-title">Toggle: Age</div>
-                              <select id="ageSelect" multiple size="3"></select>
-                              <div class="controls-hint">Cmd/Ctrl to select more</div>
+                          <div class="heatmap-controls card-toggle">
+                              <div class="toggle-header">✨ Filter by Age</div>
+                              <div class="toggle-buttons" id="ageButtons"></div>
+                              <div class="controls-hint">Click one or more age groups</div>
                           </div>
 
+                          <div class="heatmap-stage">
+                              <svg id="chart" width="980" height="520"></svg>
+                          </div>
                       </div>
                   </div>
               </div>

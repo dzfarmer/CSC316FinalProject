@@ -3,503 +3,404 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sleep Lifestyle Wellness</title>
+  <title>A Student's Sleep Cycle</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-<aside class="progress" aria-label="Scroll progress">
-    <a class="dot active" href="#home" aria-label="Go to title"></a>
-    <a class="dot" href="#intro" aria-label="Go to intro"></a>
-    <a class="dot" href="#viz1" aria-label="Go to visualization 1"></a>
-    <a class="dot" href="#insight1" aria-label="Go to insight 1"></a>
-    <a class="dot" href="#viz2" aria-label="Go to visualization 2"></a>
-    <a class="dot" href="#insight2" aria-label="Go to insight 2"></a>
-    <a class="dot" href="#viz3" aria-label="Go to visualization 3"></a>
-    <a class="dot" href="#insight3" aria-label="Go to insight 3"></a>
-    <a class="dot" href="#viz4" aria-label="Go to visualization 4"></a>
-    <a class="dot" href="#insight4" aria-label="Go to insight 4"></a>
-    <a class="dot" href="#viz5" aria-label="Go to visualization 5"></a>
-    <a class="dot" href="#insight5" aria-label="Go to insight 5"></a>
-    <a class="dot" href="#sleep-score" aria-label="Go to sleep score"></a>
+  <aside class="progress" aria-label="Scroll progress">
+    <a class="dot active" href="#home" aria-label="Go to home"></a>
+    <a class="dot" href="#panel1" aria-label="Go to panel 1"></a>
+    <a class="dot" href="#panel2" aria-label="Go to panel 2"></a>
+    <a class="dot" href="#panel3" aria-label="Go to panel 3"></a>
+    <a class="dot" href="#panel4" aria-label="Go to panel 4"></a>
+    <a class="dot" href="#panel5" aria-label="Go to panel 5"></a>
+    <a class="dot" href="#panel6" aria-label="Go to panel 6"></a>
+    <a class="dot" href="#panel7" aria-label="Go to panel 7"></a>
+    <a class="dot" href="#panel8" aria-label="Go to panel 8"></a>
   </aside>
 
   <main>
-    <!-- 1) Title front page -->
-    <section id="home" class="panel hero bg-stars">
-      <div class="container">
-        <div class="hero-grid">
-          <div>
-            <p class="kicker">A scrolling story about</p>
-            <h1>Sleep, Lifestyle<br/>and Wellness</h1>
-            <p class="subhead">
-              A template for sharing what you tracked and what you learned.
-            </p>
-
-            <div class="cta-row">
-              <a class="btn primary" href="#intro">Start scrolling</a>
-</div>
-</div>
-
-          <div class="hero-card">
-            <div class="icon-row" aria-hidden="true">
-              <span class="icon">🛏️</span>
-              <span class="icon">⏰</span>
-              <span class="icon">🌙</span>
-              <span class="icon">☀️</span>
-            </div>
-            <h3>Project snapshot</h3>
-            <ul class="checklist">
-              <li>5 visualizations</li>
-              <li>Insight sections after each chart</li>
-              <li>Easy to plug in real data later</li>
-            </ul>
-            <div class="scroll-hint" aria-hidden="true">
-              <span class="arrow"></span>
-              <span>Scroll</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="wave" aria-hidden="true"></div>
-    </section>
-
-    <!-- 2) Intro page -->
-    <section id="intro" class="panel bg-sunrise">
-      <div class="container two-col">
-        <div>
-          <h2>Intro</h2>
-          <p class="lead">
-            This page is for your context: what you tracked, why sleep matters, and what you hope to learn.
-            Keep it short and friendly.
+    <section id="home" class="panel hero bg-hero">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="kicker">CSC316 Final Project</p>
+          <h1>A Student’s Sleep Cycle</h1>
+          <p class="subhead">
+            A visual data story about how weekday sleep loss, coffee, sedentary routines,
+            nighttime habits, body balance, and small behavioral shifts shape student sleep.
           </p>
 
-          <div class="card">
-            <h3>Placeholder text</h3>
-            <p>
-              Write 4 to 8 sentences here about your sleep and wellness question.
-              Example ideas: sleep duration, bedtime consistency, screen time, caffeine, stress, and how you felt the next day.
-            </p>
-</div>
-        </div>
-
-        <div class="card image-card">
-          <div class="image-placeholder">
-            <p><strong>Image placeholder</strong></p>
-            <p>Drop an image in <code>assets/images/</code> and update the CSS background URL.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="#panel1">Start the story</a>
           </div>
-          <div class="mini-stats">
-            <div class="mini">
-              <div class="mini-top">Tracked</div>
-              <div class="mini-big">5+</div>
-              <div class="mini-sub">days</div>
-            </div>
-            <div class="mini">
-              <div class="mini-top">Daily</div>
-              <div class="mini-big">3+</div>
-              <div class="mini-sub">logs</div>
-            </div>
-            <div class="mini">
-              <div class="mini-top">Theme</div>
-              <div class="mini-big">💤</div>
-              <div class="mini-sub">sleep</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- 3) Visualization page 1 -->
-    <section id="viz1" class="panel bg-clouds">
-      <div class="container">
-        <div class="section-head">
-          <h2>Visualization 1</h2>
-          <p class="muted">Placeholder: Sleep duration vs self rated sleep quality</p>
-        </div>
-
-        <div class="viz-grid">
-          <div class="card viz-card">
-            <div class="viz-toolbar">
-              <span class="pill">Chart placeholder</span>
-</div>
-
-            <div class="chart" data-chart="1" role="img" aria-label="Placeholder chart for visualization 1">
-              <canvas width="980" height="420"></canvas>
-            </div>
-</div>
-
-          <!-- <div class="card">
-            <h3>What this could show</h3>
-            <ul class="bullets">
-              <li>Does more sleep usually match better quality?</li>
-              <li>Are there outliers after late nights?</li>
-              <li>Is there a sweet spot that feels best?</li>
-            </ul>
-
-            <div class="note">
-              <strong>Data placeholder:</strong> <code>data/sleep.csv</code>
-            </div>
-          </div> -->
-        </div>
-      </div>
-    </section>
-
-    <!-- 4) Insight text page 1 -->
-    <section id="insight1" class="panel bg-mint">
-      <div class="container">
-        <div class="quote-card">
-          <h2>Insight 1</h2>
-          <p class="lead">
-            Write your main takeaway here in 1 to 2 sentences.
+          <p class="tiny">
+            Scroll the comic panels. Click each image to explore the data behind the scene.
           </p>
-          <div class="insight-grid">
-            <div class="card">
-              <h3>Evidence</h3>
-              <p>Explain what you see in the chart using numbers and patterns.</p>
-              <p class="muted">Example: a trend, clusters, or a noticeable jump.</p>
-            </div>
-            <div class="card">
-              <h3>Why it matters</h3>
-              <p>Connect it to wellness. Sleep affects mood, focus, and energy.</p>
-              <p class="muted">Keep it personal and specific.</p>
-            </div>
-            <div class="card">
-              <h3>Next step</h3>
-              <p>What would you track next to make the story stronger?</p>
-              <p class="muted">Example: naps, stress level, or screen time before bed.</p>
-            </div>
-          </div>
+        </div>
+
+        <div class="hero-card reveal">
+          <h3>Story structure</h3>
+          <ul class="checklist">
+            <li>Weekday shortage</li>
+            <li>Coffee compensation</li>
+            <li>Sedentary routine</li>
+            <li>Night choices</li>
+            <li>BMI imbalance</li>
+            <li>Behavior loop</li>
+            <li>Behavioral balance</li>
+            <li>Sleep score simulator</li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- 5) Visualization page 2 -->
-      <!-- 5) Visualization page 2 -->
-      <section id="viz2" class="panel bg-lavender">
-          <div class="container">
-              <div class="section-head">
-                  <h2>Visualization 2</h2>
-                  <p class="muted">
-                      Caffeine level × Weekly average sleep × Sleep trouble rate
-                  </p>
-              </div>
-
-              <div class="viz-grid">
-                  <div class="card viz-card">
-                      <div class="viz-toolbar">
-                          <span class="pill">Interactive Heatmap</span>
-                      </div>
-
-                      <!-- 🔥 D3 Heatmap -->
-                      <div class="chart heatmap-wrap" id="caffeine-heatmap"
-                           role="img"
-                           aria-label="Heatmap of caffeine level vs sleep category showing trouble sleeping rate">
-
-                          <div class="heatmap-controls card-toggle">
-                              <div class="toggle-header">✨ Filter by Age</div>
-                              <div class="toggle-buttons" id="ageButtons"></div>
-                              <div class="controls-hint">Click one or more age groups</div>
-                          </div>
-
-                          <div class="heatmap-stage">
-                              <svg id="chart" width="980" height="520"></svg>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section>
-
-
-      <!-- 6) Insight text page 2 -->
-    <section id="insight2" class="panel bg-sunbeam">
-      <div class="container">
-        <div class="quote-card">
-          <h2>Insight 2</h2>
-          <p class="lead">
-            Add a short paragraph explaining what you learned from Visualization 2.
-          </p>
-
-          <div class="split">
-            <div class="card">
-              <h3>Pattern</h3>
-              <p>Describe the relationship you observed.</p>
-            </div>
-            <div class="card">
-              <h3>Interpretation</h3>
-              <p>Offer a reasonable explanation, without over claiming.</p>
-            </div>
-          </div>
-</div>
-      </div>
-    </section>
-
-    <!-- 7) Visualization page 3 -->
-    <section id="viz3" class="panel bg-ocean">
-      <div class="container">
-        <div class="section-head">
-          <h2>Visualization 3</h2>
-          <p class="muted">Placeholder: Caffeine intake vs number of night awakenings</p>
+    <!-- PANEL 1 -->
+    <section id="panel1" class="panel story-panel bg-morning">
+      <div class="container story-stack">
+        <div class="story-copy reveal center-copy">
+          <p class="story-label">Panel 1</p>
+          <h2>Monday Morning</h2>
+          <p class="lead">It’s Monday morning.</p>
+          <p>You slept six hours.</p>
+          <p>“I’ll catch up this weekend,” you think.</p>
+          <p>But most short weekday sleepers say the same thing.</p>
         </div>
 
-        <div class="viz-grid">
-          <div class="card viz-card">
-            <div class="viz-toolbar">
-              <span class="pill">Chart placeholder</span>
-</div>
-
-            <div class="chart" data-chart="3" role="img" aria-label="Placeholder chart for visualization 3">
-              <canvas width="980" height="420"></canvas>
-            </div>
-</div>
-
-          <!-- <div class="card">
-            <h3>Helpful callouts</h3>
-            <ul class="bullets">
-              <li>Mark coffee, tea, and energy drink days</li>
-              <li>Note the time caffeine was consumed</li>
-              <li>Compare weekdays vs weekends</li>
-            </ul>
-            <div class="note">
-              <strong>Optional:</strong> Add a small table with sample days.
-            </div>
-          </div> -->
+        <div class="story-image card clickable reveal"
+             data-chart="clock"
+             data-title="Weekday vs Weekend Sleep Pattern"
+             data-subtitle="This interactive clock compares the average weekday and weekend sleep schedule, along with related habit summaries.">
+          <img src="assets/images/panel-1-monday.jpg" alt="Student waking up tired in the dorm at 7 AM." />
+          <div class="click-hint">Click to explore</div>
         </div>
       </div>
     </section>
 
-    <!-- 8) Insight text page 3 -->
-    <section id="insight3" class="panel bg-peach">
-      <div class="container">
-        <div class="quote-card">
-          <h2>Insight 3</h2>
-          <p class="lead">
-            This is your chance to connect behavior to sleep outcomes.
-          </p>
+    <!-- PANEL 2 -->
+    <section id="panel2" class="panel story-panel bg-coffee">
+      <div class="container story-stack">
+        <div class="story-copy reveal center-copy">
+          <p class="story-label">Panel 2</p>
+          <h2>The Coffee Response</h2>
+          <p class="lead">Tuesday morning.</p>
+          <p>You feel tired.</p>
+          <p>So you pour coffee.</p>
+          <p>Short sleep often leads to higher caffeine consumption.</p>
+        </div>
 
-          <div class="insight-grid">
-            <div class="card">
-              <h3>Key takeaway</h3>
-              <p>State the biggest point in one sentence.</p>
-            </div>
-            <div class="card">
-              <h3>Confidence</h3>
-              <p>Mention sample size and what might bias the result.</p>
-            </div>
-            <div class="card">
-              <h3>Action</h3>
-              <p>What could you try next week?</p>
-            </div>
-          </div>
+        <div class="story-image card clickable reveal"
+             data-chart="heatmap"
+             data-title="Caffeine and Sleep"
+             data-subtitle="This heatmap compares caffeine level, sleep duration category, and trouble sleeping rate.">
+          <img src="assets/images/panel-2-coffee.jpg" alt="Student holding coffee in a campus coffee shop." />
+          <div class="click-hint">Click to explore</div>
         </div>
       </div>
     </section>
 
-    <!-- 9) Visualization page 4 -->
-    <section id="viz4" class="panel bg-sky">
-      <div class="container">
-        <div class="section-head">
-          <h2>Visualization 4</h2>
-          <p class="muted">Placeholder: Exercise timing vs deep sleep minutes</p>
+    <!-- PANEL 3 -->
+    <section id="panel3" class="panel story-panel bg-library">
+      <div class="container story-stack">
+        <div class="story-copy reveal center-copy">
+          <p class="story-label">Panel 3</p>
+          <h2>Sitting All Day</h2>
+          <p class="lead">The day passes.</p>
+          <p>Meetings. Screens. Sitting.</p>
+          <p>Sedentary time accumulates — and so does fatigue.</p>
         </div>
 
-        <div class="viz-grid">
-          <div class="card viz-card">
-            <div class="viz-toolbar">
-              <span class="pill">Chart placeholder</span>
-</div>
-
-            <div class="chart" data-chart="4" role="img" aria-label="Placeholder chart for visualization 4">
-              <canvas width="980" height="420"></canvas>
-            </div>
-</div>
-
-          <div class="card">
-            <h3>Notes</h3>
-            <p class="muted">
-              If you do not have deep sleep data, you can swap this for:
-              step count, exercise minutes, or how energized you felt.
-            </p>
-            <div class="note">
-              <strong>Replace freely:</strong> the story structure stays the same.
-            </div>
-          </div>
+        <div class="story-image card clickable reveal"
+             data-chart="sedentary"
+             data-title="Sedentary Time and Sleep"
+             data-subtitle="This chart summarizes how long sitting hours can accumulate across the day and connect to fatigue.">
+          <img src="assets/images/panel-3-library.jpg" alt="Student sitting and studying for a long time in the library." />
+          <div class="click-hint">Click to explore</div>
         </div>
       </div>
     </section>
 
-    <!-- 10) Insight text page 4 -->
-    <section id="insight4" class="panel bg-butter">
-      <div class="container">
-        <div class="quote-card">
-          <h2>Insight 4</h2>
-          <p class="lead">
-            Add a mini conclusion, then lead into the final chart.
-          </p>
-
-          <div class="split">
-            <div class="card">
-              <h3>What changed</h3>
-              <p>Describe any shift across the week.</p>
-            </div>
-            <div class="card">
-              <h3>What stayed the same</h3>
-              <p>Point out consistency too, not just differences.</p>
-            </div>
-          </div>
-</div>
-      </div>
-    </section>
-
-    <!-- 11) Visualization page 5 -->
-    <section id="viz5" class="panel bg-gradient">
-      <div class="container">
-        <div class="section-head">
-          <h2>Visualization 5</h2>
-          <p class="muted">Placeholder: Bedtime consistency across days</p>
+    <!-- PANEL 4 -->
+    <section id="panel4" class="panel story-panel bg-night">
+      <div class="container story-stack">
+        <div class="story-copy reveal center-copy light">
+          <p class="story-label">Panel 4</p>
+          <h2>Night Choices</h2>
+          <p class="lead">At night, the choices continue.</p>
+          <p>Exercise?</p>
+          <p>Alcohol?</p>
+          <p>Scroll a little longer?</p>
+          <p>Habits stack — and so do effects.</p>
         </div>
 
-        <div class="viz-grid">
-          <div class="card viz-card">
-            <div class="viz-toolbar">
-              <span class="pill">Chart placeholder</span>
-</div>
-
-            <div class="chart" data-chart="5" role="img" aria-label="Placeholder chart for visualization 5">
-              <canvas width="980" height="420"></canvas>
-            </div>
-</div>
-
-          <!-- <div class="card">
-            <h3>Wrap up setup</h3>
-            <ul class="bullets">
-              <li>What habit had the biggest impact?</li>
-              <li>What surprised you?</li>
-              <li>What will you keep doing?</li>
-            </ul>
-            <div class="note">
-              <strong>Hint:</strong> A consistent bedtime is often easier than changing everything at once.
-            </div>
-          </div> -->
+        <div class="story-image card clickable reveal"
+             data-chart="night"
+             data-title="Night Habits and Sleep"
+             data-subtitle="This panel summarizes how multiple nighttime behaviors can build up around sleep.">
+          <img src="assets/images/panel-4-phone.jpg" alt="Student using phone late at night in the dorm." />
+          <div class="click-hint">Click to explore</div>
         </div>
       </div>
     </section>
 
-    <!-- 12) Insight text page 5 -->
-    <section id="insight5" class="panel bg-night">
-      <div class="container">
-        <div class="final-card">
-          <h2>Final insight</h2>
-          <p class="lead">
-            Summarize your story in 2 to 4 sentences. End with one practical takeaway.
-          </p>
+    <!-- PANEL 5 -->
+    <section id="panel5" class="panel story-panel bg-grass">
+      <div class="container story-stack">
+        <div class="story-copy reveal center-copy">
+          <p class="story-label">Panel 5</p>
+          <h2>The Body Responds</h2>
+          <p class="lead">Over time, imbalance shows up in the body.</p>
+          <p>Sleep duration varies across BMI groups.</p>
+          <p>Not dramatically — but consistently.</p>
+        </div>
 
-          <div class="card">
-            <h3>Conclusion placeholder</h3>
-            <p>
-              Example: When I kept my bedtime within a small window, I felt more focused the next day.
-              The biggest challenge was late screen time, so my next step is to set a phone cut off time.
-            </p>
-          </div>
-
-          <div class="footer-row">
-            <a class="btn primary" href="#home">Back to top</a>
-          </div>
+        <div class="story-image card clickable reveal"
+             data-chart="bmi"
+             data-title="BMI and Sleep"
+             data-subtitle="This chart compares sleep categories across BMI groups using the uploaded seesaw visualization.">
+          <img src="assets/images/panel-5-grass.jpg" alt="Student sitting on the grass holding coffee and thinking." />
+          <div class="click-hint">Click to explore</div>
         </div>
       </div>
     </section>
 
-    <!-- Sleep Score: potions → bottle → star -->
-    <section id="sleep-score" class="panel bg-night">
-      <div class="container sleep-score-wrap">
-        <header class="sleep-score-title" aria-label="Sleep score section">
-          <span class="sleep-score-sparkle" aria-hidden="true">✨</span>
-          <h2>Solution: Your Sleep Score</h2>
-          <span class="sleep-score-sparkle" aria-hidden="true">✨</span>
-        </header>
-
-        <div class="sleep-score-panel" aria-labelledby="sleep-score-inputs-heading">
-          <h3 id="sleep-score-inputs-heading">Pour your potions</h3>
-          <p class="sleep-score-hint">Click each bottle to change how much you pour. Then pour into the big bottle!</p>
-
-          <div class="sleep-score-potions" role="group" aria-label="Potion levels">
-            <div class="sleep-score-potion-wrap">
-              <label>Age</label>
-              <div class="sleep-score-potion" id="sleep-score-potion-age" tabindex="0" role="button" aria-label="Age potion, click to change level">
-                <div class="sleep-score-potion-fill" id="sleep-score-fill-age"></div>
-              </div>
-              <span class="sleep-score-level" id="sleep-score-level-age">1</span>
-            </div>
-            <div class="sleep-score-potion-wrap">
-              <label>Weekend shift</label>
-              <div class="sleep-score-potion" id="sleep-score-potion-weekend" tabindex="0" role="button" aria-label="Weekend shift potion">
-                <div class="sleep-score-potion-fill" id="sleep-score-fill-weekend"></div>
-              </div>
-              <span class="sleep-score-level" id="sleep-score-level-weekend">0</span>
-            </div>
-            <div class="sleep-score-potion-wrap">
-              <label>Coffee</label>
-              <div class="sleep-score-potion" id="sleep-score-potion-coffee" tabindex="0" role="button" aria-label="Coffee potion">
-                <div class="sleep-score-potion-fill" id="sleep-score-fill-coffee"></div>
-              </div>
-              <span class="sleep-score-level" id="sleep-score-level-coffee">1</span>
-            </div>
-            <div class="sleep-score-potion-wrap">
-              <label>Activity</label>
-              <div class="sleep-score-potion" id="sleep-score-potion-activity" tabindex="0" role="button" aria-label="Activity potion">
-                <div class="sleep-score-potion-fill" id="sleep-score-fill-activity"></div>
-              </div>
-              <span class="sleep-score-level" id="sleep-score-level-activity">2</span>
-            </div>
-            <div class="sleep-score-potion-wrap">
-              <label>BMI</label>
-              <div class="sleep-score-potion" id="sleep-score-potion-bmi" tabindex="0" role="button" aria-label="BMI potion">
-                <div class="sleep-score-potion-fill" id="sleep-score-fill-bmi"></div>
-              </div>
-              <span class="sleep-score-level" id="sleep-score-level-bmi">0</span>
-            </div>
-          </div>
-
-          <div class="sleep-score-bottle-zone">
-            <div class="sleep-score-bottle-label">Sleep potion bottle</div>
-            <div class="sleep-score-bottle" id="sleep-score-bottle" aria-label="Mixed sleep potion bottle">
-              <div id="sleep-score-bottle-layers"></div>
-            </div>
-          </div>
-          <button type="button" class="sleep-score-btn-pour" id="sleep-score-btn-pour">Pour into bottle →</button>
+    <!-- PANEL 6 -->
+    <section id="panel6" class="panel story-panel bg-warm-sleep">
+      <div class="container story-stack">
+        <div class="story-copy reveal center-copy">
+          <p class="story-label">Panel 6</p>
+          <h2>The Loop</h2>
+          <p class="lead">Sleep loss → coffee → fatigue → less movement → unstable sleep.</p>
+          <p>It’s not one bad habit.</p>
+          <p>It’s a loop.</p>
         </div>
 
-        <div class="sleep-score-output" id="sleep-score-output" aria-live="polite" hidden>
-          <h3>Your sleep quality</h3>
-          <div class="sleep-score-star-zone">
-            <div class="sleep-score-star-label">Star size = sleep quality</div>
-            <div class="sleep-score-star" id="sleep-score-star-wrap" aria-hidden="true">
-              <span id="sleep-score-star-char">★</span>
-            </div>
-            <div class="sleep-score-quality-text" id="sleep-score-quality-text">—</div>
-          </div>
-          <div class="sleep-score-advice-row">
-            <label>Advice</label>
-            <div class="sleep-score-advice-box" id="sleep-score-advice" role="status">
-              Pour your potions and click the button to see your result.
-            </div>
-          </div>
+        <div class="story-image card clickable reveal"
+             data-chart="loop"
+             data-title="Behavior Loop"
+             data-subtitle="This panel connects the recurring cycle of sleep loss and compensation.">
+          <img src="assets/images/panel-6-sleep.jpg" alt="Student sleeping in warm sunlight in the dorm." />
+          <div class="click-hint">Click to explore</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 7 -->
+    <section id="panel7" class="panel story-panel bg-sunset-class">
+      <div class="container story-stack">
+        <div class="story-copy reveal center-copy">
+          <p class="story-label">Panel 7</p>
+          <h2>Behavioral Balance</h2>
+          <p class="lead">Sleep quality is not determined by one factor.</p>
+          <p>It is the result of behavioral balance.</p>
         </div>
 
-        <p class="sleep-score-legend">
-          Bigger star = better sleep quality. Aim for 7–9 hours of sleep!
-        </p>
+        <div class="story-image card clickable reveal"
+             data-chart="balance"
+             data-title="Behavioral Balance"
+             data-subtitle="This synthesis panel summarizes the main message of the project.">
+          <img src="assets/images/panel-7-classroom.jpg" alt="Student sitting in a classroom at sunset, thinking." />
+          <div class="click-hint">Click to explore</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 8 -->
+    <section id="panel8" class="panel story-panel bg-run">
+      <div class="container story-stack">
+        <div class="story-copy reveal center-copy">
+          <p class="story-label">Panel 8</p>
+          <h2>The Experiment</h2>
+          <p class="lead">What if you adjusted just a few behaviors?</p>
+          <p>Small shifts — together — predict better sleep.</p>
+        </div>
+
+        <div class="story-image card clickable reveal"
+             data-chart="simulator"
+             data-title="Sleep Score Simulator"
+             data-subtitle="Mix the lifestyle factors and see how the predicted sleep quality changes.">
+          <img src="assets/images/panel-8-run.jpg" alt="Student jogging on campus in the morning light." />
+          <div class="click-hint">Click to explore</div>
+        </div>
       </div>
     </section>
   </main>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="js/caffeineHeatmap.js"></script>
-<script src="js/main.js"></script>
+  <div id="chartModal" class="chart-modal" aria-hidden="true">
+    <div class="chart-container">
+      <button id="closeModal" class="close-btn" aria-label="Close modal">✕</button>
 
-  <script src="js/main.js"></script>
+      <div class="chart-header">
+        <h2 id="chartTitle">Chart title</h2>
+        <p id="chartSubtitle">Chart subtitle</p>
+      </div>
+
+      <div class="chart-stage">
+        <div class="chart-panel" id="panel-clock">
+          <iframe class="chart-iframe" data-src="cartoon_clock.html" title="Weekday and weekend clock chart"></iframe>
+        </div>
+
+        <div class="chart-panel" id="panel-heatmap">
+          <div class="heatmap-wrap">
+            <div class="heatmap-controls">
+              <div class="toggle-header">Filter by Age</div>
+              <div class="toggle-buttons" id="ageButtons"></div>
+              <div class="controls-hint">Click one or more age groups</div>
+            </div>
+
+            <div class="heatmap-stage">
+              <svg id="chart" width="980" height="520" role="img" aria-label="Caffeine heatmap"></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-panel" id="panel-sedentary">
+          <div class="mini-chart-card">
+            <div class="mini-chart-header">
+              <div class="mini-badge">Data summary</div>
+              <h3>Sedentary time builds through the day</h3>
+              <p>This chart shows a simple accumulation pattern: sitting hours rise across the day while energy falls.</p>
+            </div>
+            <svg id="sedentaryChart" width="960" height="420" role="img" aria-label="Sedentary pattern chart"></svg>
+          </div>
+        </div>
+
+        <div class="chart-panel" id="panel-night">
+          <div class="mini-chart-card dark-mini-chart">
+            <div class="mini-chart-header">
+              <div class="mini-badge dark-badge">Night summary</div>
+              <h3>Night habits stack together</h3>
+              <p>This chart compares how nighttime choices may combine around sleep instability.</p>
+            </div>
+            <svg id="nightChart" width="960" height="420" role="img" aria-label="Night habit stacked chart"></svg>
+          </div>
+        </div>
+
+        <div class="chart-panel" id="panel-bmi">
+          <iframe class="chart-iframe" data-src="seesaw.html" title="BMI Sleepy Seesaw chart"></iframe>
+        </div>
+
+        <div class="chart-panel" id="panel-loop">
+          <div class="mini-chart-card">
+            <div class="mini-chart-header">
+              <div class="mini-badge">Concept + data flow</div>
+              <h3>The compensation cycle</h3>
+              <p>This flow diagram shows how one behavior pushes the next, creating a repeated loop.</p>
+            </div>
+            <svg id="loopChart" width="960" height="420" role="img" aria-label="Behavior loop diagram"></svg>
+          </div>
+        </div>
+
+        <div class="chart-panel" id="panel-balance">
+          <div class="mini-chart-card">
+            <div class="mini-chart-header">
+              <div class="mini-badge">Main message</div>
+              <h3>Sleep is behavioral balance</h3>
+              <p>This radar chart summarizes the project’s key dimensions.</p>
+            </div>
+            <svg id="balanceChart" width="960" height="500" role="img" aria-label="Behavioral balance radar chart"></svg>
+          </div>
+        </div>
+
+        <div class="chart-panel" id="panel-simulator">
+          <section id="sleep-score" class="sleep-score-wrap">
+            <header class="sleep-score-title">
+              <span class="sleep-score-sparkle">✨</span>
+              <h3>Solution: Your Sleep Score</h3>
+              <span class="sleep-score-sparkle">✨</span>
+            </header>
+
+            <div class="sleep-score-panel" aria-labelledby="sleep-score-inputs-heading">
+              <h4 id="sleep-score-inputs-heading">Pour your potions</h4>
+              <p class="sleep-score-hint">Click each bottle to change how much you pour. Then pour into the big bottle!</p>
+
+              <div class="sleep-score-potions" role="group" aria-label="Potion levels">
+                <div class="sleep-score-potion-wrap">
+                  <label>Age</label>
+                  <div class="sleep-score-potion" id="sleep-score-potion-age" tabindex="0" role="button" aria-label="Age potion, click to change level">
+                    <div class="sleep-score-potion-fill" id="sleep-score-fill-age"></div>
+                  </div>
+                  <span class="sleep-score-level" id="sleep-score-level-age">1</span>
+                </div>
+
+                <div class="sleep-score-potion-wrap">
+                  <label>Weekend shift</label>
+                  <div class="sleep-score-potion" id="sleep-score-potion-weekend" tabindex="0" role="button" aria-label="Weekend shift potion">
+                    <div class="sleep-score-potion-fill" id="sleep-score-fill-weekend"></div>
+                  </div>
+                  <span class="sleep-score-level" id="sleep-score-level-weekend">0</span>
+                </div>
+
+                <div class="sleep-score-potion-wrap">
+                  <label>Coffee</label>
+                  <div class="sleep-score-potion" id="sleep-score-potion-coffee" tabindex="0" role="button" aria-label="Coffee potion">
+                    <div class="sleep-score-potion-fill" id="sleep-score-fill-coffee"></div>
+                  </div>
+                  <span class="sleep-score-level" id="sleep-score-level-coffee">1</span>
+                </div>
+
+                <div class="sleep-score-potion-wrap">
+                  <label>Activity</label>
+                  <div class="sleep-score-potion" id="sleep-score-potion-activity" tabindex="0" role="button" aria-label="Activity potion">
+                    <div class="sleep-score-potion-fill" id="sleep-score-fill-activity"></div>
+                  </div>
+                  <span class="sleep-score-level" id="sleep-score-level-activity">2</span>
+                </div>
+
+                <div class="sleep-score-potion-wrap">
+                  <label>BMI</label>
+                  <div class="sleep-score-potion" id="sleep-score-potion-bmi" tabindex="0" role="button" aria-label="BMI potion">
+                    <div class="sleep-score-potion-fill" id="sleep-score-fill-bmi"></div>
+                  </div>
+                  <span class="sleep-score-level" id="sleep-score-level-bmi">0</span>
+                </div>
+              </div>
+
+              <div class="sleep-score-bottle-zone">
+                <div class="sleep-score-bottle-label">Sleep potion bottle</div>
+                <div class="sleep-score-bottle" id="sleep-score-bottle" aria-label="Mixed sleep potion bottle">
+                  <div id="sleep-score-bottle-layers"></div>
+                </div>
+              </div>
+
+              <button type="button" class="sleep-score-btn-pour" id="sleep-score-btn-pour">Pour into bottle →</button>
+            </div>
+
+            <div class="sleep-score-output" id="sleep-score-output" aria-live="polite" hidden>
+              <h4>Your sleep quality</h4>
+              <div class="sleep-score-star-zone">
+                <div class="sleep-score-star-label">Star size = sleep quality</div>
+                <div class="sleep-score-star" id="sleep-score-star-wrap" aria-hidden="true">
+                  <span id="sleep-score-star-char">★</span>
+                </div>
+                <div class="sleep-score-quality-text" id="sleep-score-quality-text">—</div>
+              </div>
+
+              <div class="sleep-score-advice-row">
+                <label>Advice</label>
+                <div class="sleep-score-advice-box" id="sleep-score-advice" role="status">
+                  Pour your potions and click the button to see your result.
+                </div>
+              </div>
+            </div>
+
+            <p class="sleep-score-legend">
+              Bigger star = better sleep quality. Aim for 7–9 hours of sleep!
+            </p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="js/caffeineHeatmap.js"></script>
   <script src="js/sleep-score.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

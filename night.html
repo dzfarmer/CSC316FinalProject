@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Night Habits and Sleep</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      background:
+        radial-gradient(circle at top right, rgba(120, 168, 255, 0.16), transparent 26%),
+        linear-gradient(180deg, #0f1630 0%, #161f40 100%);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      color: #eef3ff;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(23, 29, 51, 0.82);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 18px 42px rgba(0,0,0,0.18);
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: #cfd7e8;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .axis text {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 12px;
+      fill: #eef3ff;
+    }
+
+    .axis path,
+    .axis line {
+      stroke: rgba(255,255,255,0.25);
+    }
+
+    .legend {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      font-size: 0.95rem;
+      color: #eef3ff;
+      font-weight: 700;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <div class="badge">Night choices</div>
+      <h2>Night Habits and Sleep</h2>
+      <p>
+        Evening behaviors do not act alone. Screen time, late caffeine, alcohol,
+        and late exercise can stack together around sleep instability.
+      </p>
+
+      <svg id="nightChart" viewBox="0 0 960 420" aria-label="Night habit stacked chart"></svg>
+
+      <div class="legend">
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:#9bd3ae;"></span>
+          <span>Low contribution</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:#f0d58c;"></span>
+          <span>Medium contribution</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:#ef8a7a;"></span>
+          <span>High contribution</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function renderNightChart() {
+      const svg = d3.select("#nightChart");
+      svg.selectAll("*").remove();
+
+      const width = 960;
+      const height = 420;
+      const margin = { top: 40, right: 30, bottom: 60, left: 80 };
+
+      const data = [
+        { habit: "Screen time",   low: 18, medium: 26, high: 38 },
+        { habit: "Late caffeine", low: 22, medium: 24, high: 34 },
+        { habit: "Alcohol",       low: 10, medium: 16, high: 24 },
+        { habit: "Late exercise", low: 12, medium: 18, high: 20 }
+      ];
+
+      const x = d3.scaleBand()
+        .domain(data.map(d => d.habit))
+        .range([margin.left, width - margin.right])
+        .padding(0.25);
+
+      const y = d3.scaleLinear()
+        .domain([0, 100])
+        .range([height - margin.bottom, margin.top]);
+
+      const stack = d3.stack().keys(["low", "medium", "high"]);
+      const series = stack(data);
+
+      const colors = {
+        low: "#9bd3ae",
+        medium: "#f0d58c",
+        high: "#ef8a7a"
+      };
+
+      svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x));
+
+      svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y).ticks(5).tickFormat(d => `${d}%`));
+
+      svg.selectAll(".series")
+        .data(series)
+        .join("g")
+        .attr("fill", d => colors[d.key])
+        .selectAll("rect")
+        .data(d => d)
+        .join("rect")
+        .attr("x", d => x(d.data.habit))
+        .attr("y", d => y(d[1]))
+        .attr("height", d => y(d[0]) - y(d[1]))
+        .attr("width", x.bandwidth())
+        .attr("rx", 10);
+
+      const legend = svg.append("g").attr("transform", `translate(${width - 250}, ${margin.top})`);
+      ["low", "medium", "high"].forEach((key, i) => {
+        const g = legend.append("g").attr("transform", `translate(0, ${i * 26})`);
+        g.append("rect")
+          .attr("width", 14)
+          .attr("height", 14)
+          .attr("rx", 4)
+          .attr("fill", colors[key]);
+
+        g.append("text")
+          .attr("x", 22)
+          .attr("y", 11)
+          .text(`${key} contribution`)
+          .attr("font-size", 12)
+          .attr("font-weight", 700)
+          .attr("fill", "#ffffff");
+      });
+    }
+
+    renderNightChart();
+  </script>
+</body>
+</html>

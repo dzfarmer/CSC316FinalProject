@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sedentary Time and Sleep</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      background: linear-gradient(180deg, #fff8eb 0%, #fffdf7 100%);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      color: #1f2430;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.98);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 18px 42px rgba(31,36,48,0.08);
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(111,133,255,0.12);
+      color: #6f85ff;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: #667085;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .axis text {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 12px;
+      fill: #475467;
+    }
+
+    .axis path,
+    .axis line {
+      stroke: #cfd6e4;
+    }
+
+    .legend {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: #344054;
+      font-weight: 700;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <div class="badge">Rising insight</div>
+      <h2>Sedentary Time and Sleep</h2>
+      <p>
+        As sitting time accumulates through the day, energy tends to drop. This panel
+        visualizes the routine buildup behind daytime fatigue.
+      </p>
+
+      <svg id="sedentaryChart" viewBox="0 0 960 420" aria-label="Sedentary time and energy chart"></svg>
+
+      <div class="legend">
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:#7b8cff;"></span>
+          <span>Accumulated sitting minutes</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:#ff9f66;"></span>
+          <span>Energy level</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function renderSedentaryChart() {
+      const svg = d3.select("#sedentaryChart");
+      svg.selectAll("*").remove();
+
+      const width = 960;
+      const height = 420;
+      const margin = { top: 40, right: 40, bottom: 60, left: 70 };
+
+      const data = [
+        { time: "8AM", sit: 20,  energy: 88 },
+        { time: "10AM", sit: 85,  energy: 76 },
+        { time: "12PM", sit: 150, energy: 64 },
+        { time: "2PM", sit: 220,  energy: 55 },
+        { time: "4PM", sit: 305,  energy: 42 },
+        { time: "6PM", sit: 360,  energy: 35 }
+      ];
+
+      const x = d3.scalePoint()
+        .domain(data.map(d => d.time))
+        .range([margin.left, width - margin.right]);
+
+      const yLeft = d3.scaleLinear()
+        .domain([0, 400])
+        .range([height - margin.bottom, margin.top]);
+
+      const yRight = d3.scaleLinear()
+        .domain([0, 100])
+        .range([height - margin.bottom, margin.top]);
+
+      svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x));
+
+      svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(yLeft));
+
+      svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", `translate(${width - margin.right},0)`)
+        .call(d3.axisRight(yRight));
+
+      const sitLine = d3.line()
+        .x(d => x(d.time))
+        .y(d => yLeft(d.sit))
+        .curve(d3.curveMonotoneX);
+
+      const energyLine = d3.line()
+        .x(d => x(d.time))
+        .y(d => yRight(d.energy))
+        .curve(d3.curveMonotoneX);
+
+      svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "#7b8cff")
+        .attr("stroke-width", 4)
+        .attr("d", sitLine);
+
+      svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "#ff9f66")
+        .attr("stroke-width", 4)
+        .attr("d", energyLine);
+
+      svg.selectAll(".sit-dot")
+        .data(data)
+        .join("circle")
+        .attr("cx", d => x(d.time))
+        .attr("cy", d => yLeft(d.sit))
+        .attr("r", 6)
+        .attr("fill", "#7b8cff");
+
+      svg.selectAll(".energy-dot")
+        .data(data)
+        .join("circle")
+        .attr("cx", d => x(d.time))
+        .attr("cy", d => yRight(d.energy))
+        .attr("r", 6)
+        .attr("fill", "#ff9f66");
+
+      svg.append("text")
+        .attr("x", margin.left)
+        .attr("y", margin.top - 12)
+        .attr("fill", "#7b8cff")
+        .attr("font-weight", 800)
+        .text("Accumulated sitting minutes");
+
+      svg.append("text")
+        .attr("x", width - margin.right - 140)
+        .attr("y", margin.top - 12)
+        .attr("fill", "#ff9f66")
+        .attr("font-weight", 800)
+        .text("Energy level");
+
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height - 18)
+        .attr("text-anchor", "middle")
+        .attr("font-weight", 700)
+        .text("Day timeline");
+    }
+
+    renderSedentaryChart();
+  </script>
+</body>
+</html>

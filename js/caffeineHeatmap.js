@@ -171,8 +171,7 @@ d3.csv(DATA_URL, d => ({
 })).then(data => {
 
     data = data.filter(d => d.ageGroup && d.sleepCat && d.cafCat);
-
-    const ageGroups = [...new Set(data.map(d => d.ageGroup))];
+    const ageGroups = ["20–29", "30–39", "40–50"];
 
     // ========= age buttons =========
     const buttonWrap = d3.select("#ageButtons");

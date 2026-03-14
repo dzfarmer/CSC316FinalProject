@@ -1,0 +1,159 @@
+#seesaw-viz.ss-root {
+  --ss-bg: #fff9f0;
+  --ss-text: #6b4226;
+  --ss-outline: #8c5e35;
+  --ss-shadow: 0 4px 0 rgba(140, 94, 53, 0.35);
+  background:
+    radial-gradient(#f3e5d8 10%, transparent 10%),
+    var(--ss-bg);
+  background-size: 30px 30px, auto;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+#seesaw-viz .ss-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+#seesaw-viz .ss-title-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  border: 3px solid var(--ss-outline);
+  background: linear-gradient(180deg, #ffe4e1, #ffc1cc);
+  box-shadow: var(--ss-shadow);
+}
+
+#seesaw-viz .ss-title-banner h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--ss-text);
+}
+
+#seesaw-viz .ss-star { font-size: 1.2rem; }
+
+#seesaw-viz .ss-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+#seesaw-viz .ss-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--ss-text);
+}
+
+#seesaw-viz .ss-controls select,
+#seesaw-viz .ss-reset-lock {
+  font: inherit;
+  border: 3px solid var(--ss-outline);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #fff;
+  color: var(--ss-text);
+  box-shadow: var(--ss-shadow);
+}
+
+#seesaw-viz .ss-reset-lock {
+  cursor: pointer;
+  font-weight: 800;
+  background: #ffecb3;
+}
+
+#seesaw-viz .ss-chart svg {
+  border-radius: 22px;
+  border: 4px solid var(--ss-outline);
+  background: #fffef9;
+  box-shadow: 0 6px 0 rgba(140, 94, 53, 0.2);
+}
+
+#seesaw-viz .ss-legend {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+#seesaw-viz .ss-leg-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 2px solid var(--ss-outline);
+  background: #fff;
+  padding: 4px 9px;
+  box-shadow: 2px 2px 0 rgba(140, 94, 53, 0.2);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ss-text);
+  cursor: pointer;
+}
+
+#seesaw-viz .ss-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 2px solid var(--ss-outline);
+}
+
+#seesaw-viz .ss-hint {
+  margin-top: 10px;
+  text-align: center;
+  color: var(--ss-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+#seesaw-viz .ss-tooltip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translate(-9999px, -9999px);
+  pointer-events: none;
+  z-index: 8;
+  background: #fff;
+  color: var(--ss-text);
+  border: 3px solid var(--ss-outline);
+  border-radius: 14px;
+  padding: 8px 10px;
+  box-shadow: var(--ss-shadow);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+#seesaw-viz .ss-axis path,
+#seesaw-viz .ss-axis line {
+  stroke: var(--ss-outline);
+  stroke-width: 2px;
+}
+
+#seesaw-viz .ss-axis text {
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--ss-text);
+}
+
+#seesaw-viz .ss-row-label {
+  font-size: 14px;
+  font-weight: 800;
+  fill: var(--ss-text);
+}
+
+#seesaw-viz .ss-pct-text {
+  font-size: 12px;
+  font-weight: 800;
+  fill: var(--ss-text);
+  pointer-events: none;
+}

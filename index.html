@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/radar.css" />
+  <link rel="stylesheet" href="css/cartoon_clock.css" />
+  <link rel="stylesheet" href="css/seesaw.css" />
 </head>
 <body>
 <aside class="progress" aria-label="Scroll progress">
@@ -117,17 +119,85 @@
       <div class="container">
         <div class="section-head">
           <h2>Visualization 1</h2>
-          <p class="muted">Placeholder: Sleep duration vs self rated sleep quality</p>
+          <p class="muted">Cartoon Clock sleep visualization</p>
         </div>
 
         <div class="viz-grid">
           <div class="card viz-card">
             <div class="viz-toolbar">
-              <span class="pill">Chart placeholder</span>
+              <span class="pill">Cartoon Clock</span>
 </div>
 
-            <div class="chart" data-chart="1" role="img" aria-label="Placeholder chart for visualization 1">
-              <canvas width="980" height="420"></canvas>
+            <div class="chart chart-clean" role="img" aria-label="Cartoon clock sleep visualization">
+              <div id="cartoon-clock-viz" class="cc-root">
+                <div class="cc-dashboard">
+                  <h3 class="cc-title">Sleepy Time</h3>
+                  <p class="cc-subtitle">A cartoon look at our zzz's and habits!</p>
+
+                  <div class="cc-controls">
+                    <div class="cc-toggle-container">
+                      <button class="cc-toggle-btn active" data-val="all" type="button">Everyone</button>
+                      <button class="cc-toggle-btn" data-val="weekday_sleeper" type="button">Week-day Sleepers</button>
+                      <button class="cc-toggle-btn" data-val="stable" type="button">Regular Sleepers</button>
+                      <button class="cc-toggle-btn" data-val="weekend_sleeper" type="button">Weekend Sleepers</button>
+                    </div>
+                  </div>
+
+                  <div class="cc-charts-container">
+                    <div class="cc-clock-wrapper">
+                      <div class="cc-chart-weekday"></div>
+                      <div class="cc-clock-label">Weekday</div>
+                    </div>
+                    <div class="cc-clock-wrapper">
+                      <div class="cc-chart-weekend"></div>
+                      <div class="cc-clock-label">Weekend</div>
+                    </div>
+                  </div>
+
+                  <div class="cc-stats-section-title">Sleep Schedule</div>
+                  <div class="cc-stats-grid">
+                    <div class="cc-stat-card">
+                      <div class="cc-stat-label">Bedtime Shift</div>
+                      <div class="cc-stat-value" id="cc-stat-bedtime">--</div>
+                      <div class="cc-stat-desc">Diff from weekday to weekend</div>
+                      <div class="cc-indicator" id="cc-ind-bedtime">--</div>
+                    </div>
+                    <div class="cc-stat-card">
+                      <div class="cc-stat-label">Wake-up Shift</div>
+                      <div class="cc-stat-value" id="cc-stat-wake">--</div>
+                      <div class="cc-stat-desc">Diff from weekday to weekend</div>
+                      <div class="cc-indicator" id="cc-ind-wake">--</div>
+                    </div>
+                    <div class="cc-stat-card">
+                      <div class="cc-stat-label">Net Sleep</div>
+                      <div class="cc-stat-value" id="cc-stat-duration">--</div>
+                      <div class="cc-stat-desc">Weekend minus weekday duration</div>
+                      <div class="cc-indicator" id="cc-ind-duration">--</div>
+                    </div>
+                  </div>
+
+                  <div class="cc-stats-section-title">Habits</div>
+                  <div class="cc-stats-grid">
+                    <div class="cc-stat-card">
+                      <div class="cc-stat-label">Caffeine (mg)</div>
+                      <div class="cc-stat-value" id="cc-stat-caffeine">--</div>
+                    </div>
+                    <div class="cc-stat-card">
+                      <div class="cc-stat-label">Snore Score</div>
+                      <div class="cc-stat-value" id="cc-stat-snore">--</div>
+                    </div>
+                    <div class="cc-stat-card">
+                      <div class="cc-stat-label">Sedentary (min/day)</div>
+                      <div class="cc-stat-value" id="cc-stat-sedentary">--</div>
+                    </div>
+                  </div>
+
+                  <div class="cc-legend-container">
+                    <div class="cc-legend-title">Trouble Sleeping Rate</div>
+                    <div class="cc-legend"></div>
+                  </div>
+                </div>
+              </div>
             </div>
 </div>
 
@@ -302,18 +372,61 @@
     <section id="viz4" class="panel bg-sky">
       <div class="container">
         <div class="section-head">
-          <h2>Visualization 4</h2>
-          <p class="muted">Placeholder: Exercise timing vs deep sleep minutes</p>
+          <h2>BMI Sleepy Seesaw</h2>
+          <p class="muted">Seesaw chart visualization</p>
         </div>
 
         <div class="viz-grid">
           <div class="card viz-card">
             <div class="viz-toolbar">
-              <span class="pill">Chart placeholder</span>
+              <span class="pill">Seesaw</span>
 </div>
 
-            <div class="chart" data-chart="4" role="img" aria-label="Placeholder chart for visualization 4">
-              <canvas width="980" height="420"></canvas>
+            <div class="chart chart-clean" role="img" aria-label="Seesaw visualization">
+              <div id="seesaw-viz" class="ss-root">
+                <div class="ss-wrap">
+                  <div class="ss-title-banner">
+                    <span class="ss-star">✨</span>
+                    <h3>BMI Sleepy Seesaw</h3>
+                    <span class="ss-star">✨</span>
+                  </div>
+
+                  <div class="ss-controls">
+                    <label>Sleep
+                      <select class="ss-sleep-measure">
+                        <option value="sleep_hours_weekday">Weekday</option>
+                        <option value="sleep_hours_weekend">Weekend</option>
+                        <option value="sleep_hours_weekly_avg" selected>Weekly avg</option>
+                      </select>
+                    </label>
+
+                    <label>Sex
+                      <select class="ss-sex-filter">
+                        <option value="all" selected>All</option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                      </select>
+                    </label>
+
+                    <label>Poverty
+                      <select class="ss-pov-filter">
+                        <option value="all" selected>All</option>
+                        <option value="1">≤130% FPL</option>
+                        <option value="2">130–185% FPL</option>
+                        <option value="3">>185% FPL</option>
+                      </select>
+                    </label>
+
+                    <button class="ss-reset-lock" type="button">Reset lock</button>
+                  </div>
+
+                  <div class="ss-chart"></div>
+                  <div class="ss-legend"></div>
+                  <div class="ss-hint">Click a BMI row to lock it. Click legend items to filter buckets.</div>
+                </div>
+
+                <div class="ss-tooltip"></div>
+              </div>
             </div>
 </div>
 
@@ -512,6 +625,8 @@
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="js/caffeineHeatmap.js"></script>
 <script src="js/sleepRadar.js"></script>
+<script src="js/cartoon_clock.js"></script>
+<script src="js/seesaw.js"></script>
 <script src="js/main.js"></script>
   <script src="js/sleep-score.js"></script>
 </body>

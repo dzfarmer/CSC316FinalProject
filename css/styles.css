@@ -391,6 +391,20 @@ p{ margin: 0 0 12px; }
   display: block;
 }
 
+.chart.chart-clean{
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.viz-radar-frame{
+  display: block;
+  width: 100%;
+  min-height: 760px;
+  border: 0;
+  border-radius: 16px;
+}
+
 .caption{
   margin: 10px 6px 0;
   color: var(--muted);

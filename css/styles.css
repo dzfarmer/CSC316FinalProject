@@ -680,6 +680,15 @@ p{ margin: 0 0 12px; }
   color: var(--sleep-text);
 }
 
+#sleep-score .sleep-score-desc {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--sleep-text);
+  opacity: 0.9;
+  margin-top: 2px;
+  min-height: 1em;
+}
+
 #sleep-score .sleep-score-bottle-zone {
   text-align: center;
   margin: 20px 0;

@@ -2,6 +2,87 @@
    Radar (Viz 5)
    ========================= */
 
+#viz5 .heatmap-wrap{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 26px;
+  border: 3px solid #5c4033;
+  background: #f8f1ee;
+  box-shadow: 0 8px 0 rgba(92, 64, 51, 0.12);
+}
+
+#viz5 .heatmap-controls.card-toggle{
+  align-self: flex-start;
+  background: #f5ded7;
+  border: 3px solid #5c4033;
+  border-radius: 20px;
+  padding: 14px 16px 12px;
+  box-shadow: 0 5px 0 rgba(92, 64, 51, 0.12);
+  min-width: 280px;
+}
+
+#viz5 .toggle-header{
+  font-size: 1rem;
+  font-weight: 800;
+  color: #3d2c26;
+  margin-bottom: 10px;
+}
+
+#viz5 .toggle-buttons{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#viz5 .age-btn{
+  appearance: none;
+  border: 2px solid #5c4033;
+  background: #fffaf8;
+  color: #3d2c26;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(92, 64, 51, 0.10);
+  transition: transform 0.14s ease, background 0.2s ease, box-shadow 0.14s ease;
+}
+
+#viz5 .age-btn:hover{
+  transform: translateY(-1px);
+  background: #fff1ec;
+}
+
+#viz5 .age-btn:active{
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 rgba(92, 64, 51, 0.10);
+}
+
+#viz5 .age-btn.active{
+  background: #cfe6ff;
+}
+
+#viz5 .controls-hint{
+  margin-top: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(61, 44, 38, 0.78);
+}
+
+#viz5 .heatmap-stage{
+  width: 100%;
+  border-radius: 24px;
+  border: 2px solid rgba(92, 64, 51, 0.18);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.88), rgba(255,255,255,0.28)),
+    linear-gradient(180deg, #fffaf8, #fffdfc);
+  padding: 16px;
+  overflow: hidden;
+}
+
 #viz5 .radar-wrap{
   gap: 16px;
 }

@@ -1,16 +1,38 @@
-/* --- css/cartoon_clock.css (Clean Version) --- */
+/* --- css/cartoon_clock.css --- */
+
+/* --- 1. Cartoon Theme Variables --- */
 :root {
     --cc-border-color: #000000;
     --cc-accent-yellow: #f1c40f;
     --cc-accent-blue: #3498db;
+    
+    /* Status Colors */
     --color-good: #2ecc71;
     --color-bad: #e74c3c;
     --color-neutral: #95a5a6;
 }
 
+/* --- 2. Dashboard Container with Polka Dot Background --- */
 .dashboard {
+    /* Subtle Mint/Blue Polka Dot Pattern */
+    background-color: #f7fbfb; 
+    background-image: radial-gradient(#d5e8e8 15%, transparent 16%), radial-gradient(#d5e8e8 15%, transparent 16%);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+    
+    /* Layout & Typography */
     color: #2c3e50; 
     font-family: 'Fredoka', sans-serif;
+    padding: 40px; 
+    border-radius: 20px; 
+    border: 4px solid var(--cc-border-color);
+    box-shadow: 8px 8px 0px rgba(0,0,0,0.15);
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
 }
 
 .dashboard h1 { 
@@ -18,49 +40,100 @@
     font-size: 36px; 
     color: #2c3e50;
     text-transform: uppercase;
+    text-shadow: 2px 2px 0px #bdc3c7;
+    line-height: 1.2;
 }
-.dashboard p.subtitle { color: #7f8c8d; margin-bottom: 30px; font-size: 16px; font-weight: 600; }
 
+.dashboard p.subtitle { 
+    color: #7f8c8d; 
+    margin-bottom: 30px; 
+    font-size: 16px; 
+    font-weight: 600; 
+}
+
+/* --- 3. Toggle Controls --- */
 .toggle-container {
     background: #ecf0f1; 
     padding: 6px; 
     border-radius: 12px;
     border: 3px solid var(--cc-border-color);
-    display: inline-flex; gap: 4px;
+    display: inline-flex; 
+    gap: 4px;
     box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
 }
+
 .toggle-btn {
-    background: transparent; border: none; color: #7f8c8d;
-    padding: 10px 20px; font-size: 14px; font-weight: 700;
-    border-radius: 8px; cursor: pointer; font-family: 'Fredoka', sans-serif;
+    background: transparent; 
+    border: none; 
+    color: #7f8c8d;
+    padding: 10px 20px; 
+    font-size: 14px; 
+    font-weight: 700;
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-family: 'Fredoka', sans-serif;
     transition: all 0.2s;
 }
-.toggle-btn:hover { background: #bdc3c7; color: #000; }
+
+.toggle-btn:hover { 
+    background: #bdc3c7; 
+    color: #000; 
+}
+
 .toggle-btn.active {
-    background: var(--cc-accent-blue); color: #fff;
+    background: var(--cc-accent-blue); 
+    color: #fff;
     border: 2px solid #000;
     transform: translateY(-2px);
     box-shadow: 2px 2px 0px #000;
 }
 
-.charts-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 50px; margin-bottom: 40px; margin-top: 20px; }
-.clock-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; }
-.clock-label { 
-    margin-top: 15px; font-weight: 700; font-size: 18px; color: #2c3e50;
-    background: #f1c40f; padding: 5px 15px; border-radius: 20px;
-    border: 3px solid #000; box-shadow: 3px 3px 0px #000;
+/* --- 4. Charts Layout --- */
+.charts-container { 
+    display: flex; 
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 50px; 
+    margin-bottom: 40px; 
+    margin-top: 20px; 
 }
 
+.clock-wrapper { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    position: relative; 
+}
+
+.clock-label { 
+    margin-top: 15px; 
+    font-weight: 700; 
+    font-size: 18px; 
+    color: #2c3e50;
+    background: #f1c40f; 
+    padding: 5px 15px; 
+    border-radius: 20px;
+    border: 3px solid #000; 
+    box-shadow: 3px 3px 0px #000;
+}
+
+/* --- 5. Stats Grid --- */
 .stats-section-title { 
-    text-align: center; margin: 30px 0 20px 0;
-    font-size: 20px; color: #2c3e50; font-weight: 800;
+    text-align: center; 
+    margin: 30px 0 20px 0;
+    font-size: 20px; 
+    color: #2c3e50; 
+    font-weight: 800;
     text-decoration: underline wavy var(--cc-accent-yellow);
 }
 
 .stats-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px; padding: 0 10px;
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px; 
+    padding: 0 10px;
 }
+
 .stat-card {
     background: #fff; 
     padding: 15px; 
@@ -69,11 +142,22 @@
     box-shadow: 5px 5px 0px rgba(0,0,0,0.15);
     transition: transform 0.2s;
     text-align: left;
-    position: relative; overflow: hidden;
+    position: relative; 
+    overflow: hidden;
 }
-.stat-card:hover { transform: scale(1.05) rotate(-2deg); }
+
+.stat-card:hover { 
+    transform: scale(1.05) rotate(-2deg); 
+}
+
+/* Decorative top stripe for cards */
 .stat-card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 8px;
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 8px;
     background: var(--cc-accent-blue);
 }
 
@@ -82,34 +166,102 @@
 .stat-desc { font-size: 12px; color: #95a5a6; line-height: 1.2; font-weight: 600; }
 
 .indicator { 
-    display: inline-block; padding: 4px 10px; border-radius: 20px; 
-    font-size: 12px; font-weight: 700; margin-top: 5px; color: #fff;
+    display: inline-block; 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+    font-size: 12px; 
+    font-weight: 700; 
+    margin-top: 5px; 
+    color: #fff;
     border: 2px solid #000;
 }
+
 .ind-red { background: var(--color-bad); }
 .ind-green { background: var(--color-good); }
 .ind-neutral { background: var(--color-neutral); }
-.stat-emoji { font-size: 24px; position: absolute; top: 15px; right: 15px; opacity: 0.8; }
 
-.clock-circle { fill: #fff; stroke: #000; stroke-width: 4px; }
-.clock-tick { stroke: #bdc3c7; stroke-width: 2px; stroke-linecap: round; }
-.clock-num { font-family: 'Fredoka', sans-serif; font-weight: 700; fill: #2c3e50; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
+/* Emoji positioning inside stat cards */
+.stat-emoji { 
+    font-size: 24px; 
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
+    opacity: 0.8; 
+}
+
+/* --- 6. SVG / D3 Visualization Styling --- */
+.clock-circle { 
+    fill: #fff; 
+    stroke: #000; 
+    stroke-width: 4px; 
+}
+
+.clock-tick { 
+    stroke: #bdc3c7; 
+    stroke-width: 2px; 
+    stroke-linecap: round; 
+}
+
+.clock-num { 
+    font-family: 'Fredoka', sans-serif; 
+    font-weight: 700; 
+    fill: #2c3e50; 
+    font-size: 12px; 
+    text-anchor: middle; 
+    dominant-baseline: middle; 
+}
+
 path.sector { 
-    stroke: #000; stroke-width: 2px; 
+    stroke: #000; 
+    stroke-width: 2px; 
     transition: d 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045), fill 0.3s;
     cursor: pointer;
 }
-path.sector:hover { stroke-width: 4px; filter: brightness(1.1); }
 
+path.sector:hover { 
+    stroke-width: 4px; 
+    filter: brightness(1.1); 
+}
+
+/* --- 7. Tooltip --- */
 .tooltip { 
-    position: absolute; background: #fff; color: #000; 
-    padding: 10px 15px; border-radius: 12px; pointer-events: none; 
-    font-size: 14px; opacity: 0; transition: 0.2s; 
-    border: 3px solid #000; box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
-    z-index: 100; font-weight: 600; font-family: 'Fredoka', sans-serif;
+    position: absolute; 
+    background: #fff; 
+    color: #000; 
+    padding: 10px 15px; 
+    border-radius: 12px; 
+    pointer-events: none; 
+    font-size: 14px; 
+    opacity: 0; 
+    transition: 0.2s; 
+    border: 3px solid #000; 
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    z-index: 100; 
+    font-weight: 600; 
+    font-family: 'Fredoka', sans-serif;
     transform: translate(-50%, -120%);
 }
 
-.legend-container { margin-top: 30px; padding-top: 20px; border-top: 3px dashed #bdc3c7; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; }
-.legend-title { font-size: 14px; color: #2c3e50; margin-bottom: 5px; font-weight: 700; }
-.legend-axis text { font-family: 'Fredoka', sans-serif; font-weight: 600; fill: #7f8c8d; }
+/* --- 8. Legend --- */
+.legend-container { 
+    margin-top: 30px; 
+    padding-top: 20px; 
+    border-top: 3px dashed #bdc3c7; 
+    width: 100%; 
+    max-width: 400px; 
+    margin-left: auto; 
+    margin-right: auto; 
+}
+
+.legend-title { 
+    font-size: 14px; 
+    color: #2c3e50; 
+    margin-bottom: 5px; 
+    font-weight: 700; 
+}
+
+.legend-axis text { 
+    font-family: 'Fredoka', sans-serif; 
+    font-weight: 600; 
+    fill: #7f8c8d; 
+}

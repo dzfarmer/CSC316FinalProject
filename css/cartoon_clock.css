@@ -1,192 +1,115 @@
-#cartoon-clock-viz.cc-root {
-  --cc-card-bg: #ecf0f1;
-  --cc-border: #000;
-  --cc-text: #2c3e50;
-  --cc-accent: #3498db;
-  --cc-warn: #e74c3c;
-  --cc-good: #2ecc71;
-  --cc-neutral: #95a5a6;
-  position: relative;
-  overflow: visible;
-  border-radius: 0;
-  padding: 0;
-  background: transparent;
+/* --- css/cartoon_clock.css (Clean Version) --- */
+:root {
+    --cc-border-color: #000000;
+    --cc-accent-yellow: #f1c40f;
+    --cc-accent-blue: #3498db;
+    --color-good: #2ecc71;
+    --color-bad: #e74c3c;
+    --color-neutral: #95a5a6;
 }
 
-#cartoon-clock-viz .cc-clouds,
-#cartoon-clock-viz .cc-stars {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.dashboard {
+    color: #2c3e50; 
+    font-family: 'Fredoka', sans-serif;
 }
 
-#cartoon-clock-viz .cc-dashboard {
-  position: relative;
-  z-index: 2;
-  background: var(--cc-card-bg);
-  color: var(--cc-text);
-  border: 4px solid var(--cc-border);
-  border-radius: 20px;
-  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.25);
-  padding: 18px;
+.dashboard h1 { 
+    margin: 0; 
+    font-size: 36px; 
+    color: #2c3e50;
+    text-transform: uppercase;
+}
+.dashboard p.subtitle { color: #7f8c8d; margin-bottom: 30px; font-size: 16px; font-weight: 600; }
+
+.toggle-container {
+    background: #ecf0f1; 
+    padding: 6px; 
+    border-radius: 12px;
+    border: 3px solid var(--cc-border-color);
+    display: inline-flex; gap: 4px;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+}
+.toggle-btn {
+    background: transparent; border: none; color: #7f8c8d;
+    padding: 10px 20px; font-size: 14px; font-weight: 700;
+    border-radius: 8px; cursor: pointer; font-family: 'Fredoka', sans-serif;
+    transition: all 0.2s;
+}
+.toggle-btn:hover { background: #bdc3c7; color: #000; }
+.toggle-btn.active {
+    background: var(--cc-accent-blue); color: #fff;
+    border: 2px solid #000;
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 0px #000;
 }
 
-#cartoon-clock-viz .cc-title {
-  margin: 0;
-  text-align: center;
-  font-size: 1.9rem;
+.charts-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 50px; margin-bottom: 40px; margin-top: 20px; }
+.clock-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; }
+.clock-label { 
+    margin-top: 15px; font-weight: 700; font-size: 18px; color: #2c3e50;
+    background: #f1c40f; padding: 5px 15px; border-radius: 20px;
+    border: 3px solid #000; box-shadow: 3px 3px 0px #000;
 }
 
-#cartoon-clock-viz .cc-subtitle {
-  margin: 6px 0 14px;
-  text-align: center;
-  font-weight: 700;
-  color: #5d6d7e;
+.stats-section-title { 
+    text-align: center; margin: 30px 0 20px 0;
+    font-size: 20px; color: #2c3e50; font-weight: 800;
+    text-decoration: underline wavy var(--cc-accent-yellow);
 }
 
-#cartoon-clock-viz .cc-controls {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 14px;
+.stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px; padding: 0 10px;
+}
+.stat-card {
+    background: #fff; 
+    padding: 15px; 
+    border-radius: 15px;
+    border: 3px solid #000;
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+    text-align: left;
+    position: relative; overflow: hidden;
+}
+.stat-card:hover { transform: scale(1.05) rotate(-2deg); }
+.stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 8px;
+    background: var(--cc-accent-blue);
 }
 
-#cartoon-clock-viz .cc-toggle-container {
-  display: inline-flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  background: #dfe6e9;
-  border: 3px solid var(--cc-border);
-  border-radius: 12px;
-  padding: 6px;
+.stat-label { font-size: 14px; color: #7f8c8d; font-weight: 700; margin-top: 5px; }
+.stat-value { font-size: 28px; font-weight: 800; color: #2c3e50; margin: 5px 0; }
+.stat-desc { font-size: 12px; color: #95a5a6; line-height: 1.2; font-weight: 600; }
+
+.indicator { 
+    display: inline-block; padding: 4px 10px; border-radius: 20px; 
+    font-size: 12px; font-weight: 700; margin-top: 5px; color: #fff;
+    border: 2px solid #000;
+}
+.ind-red { background: var(--color-bad); }
+.ind-green { background: var(--color-good); }
+.ind-neutral { background: var(--color-neutral); }
+.stat-emoji { font-size: 24px; position: absolute; top: 15px; right: 15px; opacity: 0.8; }
+
+.clock-circle { fill: #fff; stroke: #000; stroke-width: 4px; }
+.clock-tick { stroke: #bdc3c7; stroke-width: 2px; stroke-linecap: round; }
+.clock-num { font-family: 'Fredoka', sans-serif; font-weight: 700; fill: #2c3e50; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
+path.sector { 
+    stroke: #000; stroke-width: 2px; 
+    transition: d 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045), fill 0.3s;
+    cursor: pointer;
+}
+path.sector:hover { stroke-width: 4px; filter: brightness(1.1); }
+
+.tooltip { 
+    position: absolute; background: #fff; color: #000; 
+    padding: 10px 15px; border-radius: 12px; pointer-events: none; 
+    font-size: 14px; opacity: 0; transition: 0.2s; 
+    border: 3px solid #000; box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    z-index: 100; font-weight: 600; font-family: 'Fredoka', sans-serif;
+    transform: translate(-50%, -120%);
 }
 
-#cartoon-clock-viz .cc-toggle-btn {
-  border: 0;
-  border-radius: 8px;
-  padding: 8px 14px;
-  font: inherit;
-  font-weight: 800;
-  cursor: pointer;
-  background: transparent;
-  color: #5d6d7e;
-}
-
-#cartoon-clock-viz .cc-toggle-btn.active {
-  background: var(--cc-accent);
-  color: #fff;
-  border: 2px solid var(--cc-border);
-}
-
-#cartoon-clock-viz .cc-charts-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: 10px;
-}
-
-#cartoon-clock-viz .cc-clock-wrapper {
-  text-align: center;
-}
-
-#cartoon-clock-viz .cc-clock-label {
-  margin-top: 10px;
-  display: inline-block;
-  border-radius: 999px;
-  padding: 4px 12px;
-  border: 3px solid var(--cc-border);
-  background: #f1c40f;
-  font-weight: 800;
-}
-
-#cartoon-clock-viz .cc-stats-section-title {
-  margin: 14px 0 10px;
-  font-size: 1rem;
-  font-weight: 800;
-  text-align: center;
-  text-decoration: underline wavy #f1c40f;
-}
-
-#cartoon-clock-viz .cc-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
-}
-
-#cartoon-clock-viz .cc-stat-card {
-  background: #fff;
-  border: 3px solid var(--cc-border);
-  border-radius: 12px;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
-  padding: 12px;
-}
-
-#cartoon-clock-viz .cc-stat-label {
-  font-size: 0.86rem;
-  font-weight: 700;
-  color: #6b7a8c;
-}
-
-#cartoon-clock-viz .cc-stat-value {
-  font-size: 1.6rem;
-  font-weight: 800;
-}
-
-#cartoon-clock-viz .cc-stat-desc {
-  font-size: 0.78rem;
-  color: #7f8c8d;
-}
-
-#cartoon-clock-viz .cc-indicator {
-  margin-top: 6px;
-  display: inline-block;
-  border-radius: 999px;
-  padding: 2px 9px;
-  border: 2px solid #000;
-  color: #fff;
-  font-size: 0.74rem;
-  font-weight: 800;
-}
-
-#cartoon-clock-viz .cc-ind-red { background: var(--cc-warn); }
-#cartoon-clock-viz .cc-ind-green { background: var(--cc-good); }
-#cartoon-clock-viz .cc-ind-neutral { background: var(--cc-neutral); }
-
-#cartoon-clock-viz .cc-legend-container {
-  margin-top: 14px;
-  border-top: 2px dashed #95a5a6;
-  padding-top: 10px;
-  text-align: center;
-}
-
-#cartoon-clock-viz .cc-legend-title {
-  font-size: 0.88rem;
-  font-weight: 700;
-}
-
-#cartoon-clock-viz .cc-tooltip {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 5;
-  background: #fff;
-  color: #000;
-  border: 3px solid #000;
-  border-radius: 12px;
-  padding: 8px 10px;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-#cartoon-clock-viz .cc-clock-circle { fill: #fff; stroke: #000; stroke-width: 4px; }
-#cartoon-clock-viz .cc-clock-tick { stroke: #bdc3c7; stroke-width: 2px; }
-#cartoon-clock-viz .cc-clock-num { fill: #2c3e50; font-size: 11px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; }
-#cartoon-clock-viz .cc-sector { stroke: #000; stroke-width: 2px; }
-#cartoon-clock-viz .cc-legend-axis text { font-size: 11px; fill: #3d4a57; font-weight: 700; }
-
-@media (max-width: 860px) {
-  #cartoon-clock-viz.cc-root { padding: 0; }
-  #cartoon-clock-viz .cc-dashboard { padding: 12px; }
-  #cartoon-clock-viz .cc-toggle-btn { padding: 7px 10px; font-size: 0.8rem; }
-}
+.legend-container { margin-top: 30px; padding-top: 20px; border-top: 3px dashed #bdc3c7; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; }
+.legend-title { font-size: 14px; color: #2c3e50; margin-bottom: 5px; font-weight: 700; }
+.legend-axis text { font-family: 'Fredoka', sans-serif; font-weight: 600; fill: #7f8c8d; }

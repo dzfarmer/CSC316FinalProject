@@ -1,63 +1,22 @@
-(function initCartoonClock() {
-    const root = document.getElementById("cartoon-clock-viz");
-    if (!root || typeof d3 === "undefined") return;
+// --- js/cartoon_clock.js ---
+document.addEventListener("DOMContentLoaded", () => {
+    // --- 1. D3 SETUP ---
+    const width = 300, height = 300; 
+    const margin = 40; 
+    const radius = width / 2 - margin;
+    const cornerRadius = 20;
 
-    const width = 280;
-    const height = 280;
-    const radius = width / 2 - 36;
-    const cornerRadius = 18;
-    const angleScale = d3.scaleLinear().domain([0, 24]).range([0, Math.PI * 2]);
-    const colorScale = d3.scaleSequential(d3.interpolateRdYlBu).domain([0.35, 0.15]);
-    let tooltipNode = root.querySelector(".cc-tooltip");
-    if (!tooltipNode) {
-        tooltipNode = document.createElement("div");
-        tooltipNode.className = "cc-tooltip";
-        root.appendChild(tooltipNode);
-    }
-    const tooltip = d3.select(tooltipNode);
+    // Color scale for trouble sleeping rate (Blue = Good, Red = Bad)
+    const colorScale = d3.scaleSequential(d3.interpolateRdYlBu).domain([0.35, 0.15]); 
+    const angleScale = d3.scaleLinear().domain([0, 24]).range([0, 2 * Math.PI]);
+    const tooltip = d3.select("#tooltip");
 
-    function spawnBackground() {
-        const clouds = root.querySelector(".cc-clouds");
-        const stars = root.querySelector(".cc-stars");
-        if (!clouds || !stars) return;
-        clouds.innerHTML = "";
-        stars.innerHTML = "";
-
-        for (let i = 0; i < 4; i += 1) {
-            const cloud = document.createElement("div");
-            cloud.style.position = "absolute";
-            cloud.style.width = `${90 + Math.random() * 120}px`;
-            cloud.style.height = `${32 + Math.random() * 28}px`;
-            cloud.style.left = `${Math.random() * 88}%`;
-            cloud.style.top = `${Math.random() * 34}%`;
-            cloud.style.opacity = "0.1";
-            cloud.style.background = "#fff";
-            cloud.style.borderRadius = "999px";
-            clouds.appendChild(cloud);
-        }
-
-        for (let i = 0; i < 14; i += 1) {
-            const star = document.createElement("div");
-            star.textContent = "✦";
-            star.style.position = "absolute";
-            star.style.left = `${Math.random() * 96}%`;
-            star.style.top = `${Math.random() * 30}%`;
-            star.style.color = "#f1c40f";
-            star.style.opacity = "0.4";
-            star.style.fontSize = `${10 + Math.random() * 10}px`;
-            stars.appendChild(star);
-        }
-    }
-
-    function parseTime(value) {
-        if (!value) return null;
-        const text = String(value).replace(/[b']/g, "").trim();
-        const parts = text.split(":");
-        if (parts.length !== 2) return null;
-        const hh = Number(parts[0]);
-        const mm = Number(parts[1]);
-        if (!Number.isFinite(hh) || !Number.isFinite(mm)) return null;
-        return hh + (mm / 60);
+    // --- Helper Functions ---
+    function parseTime(str) {
+        if (!str || str === "NaN") return null;
+        const s = str.replace(/[b']/g, "");
+        const [h, m] = s.split(":").map(Number);
+        return h + (m / 60);
     }
 
     function getTimeDiff(t1, t2) {
@@ -75,207 +34,242 @@
         return `${sign}${h}h ${m}m`;
     }
 
-    function sleepCategory(row) {
-        const weekday = Number(row.sleep_hours_weekday);
-        const weekend = Number(row.sleep_hours_weekend);
-        if (!Number.isFinite(weekday) || !Number.isFinite(weekend)) return null;
-        const diff = weekend - weekday;
-        if (Math.abs(diff) <= 1) return "stable";
-        if (diff > 1) return "weekend_sleeper";
-        return "weekday_sleeper";
+    function getSleepCategory(d) {
+        const wkday = parseFloat(d.sleep_hours_weekday);
+        const wkend = parseFloat(d.sleep_hours_weekend);
+        if (isNaN(wkday) || isNaN(wkend)) return null;
+        const diff = wkend - wkday; 
+        if (Math.abs(diff) <= 1.0) return "stable";
+        if (diff > 1.0) return "weekend_sleeper";
+        if (diff < -1.0) return "weekday_sleeper";
+        return "stable";
     }
 
-    function initClock(container) {
-        d3.select(container).selectAll("*").remove();
-        const svg = d3.select(container)
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .append("g")
-            .attr("transform", `translate(${width / 2},${height / 2})`);
-
-        svg.append("circle").attr("r", radius).attr("class", "cc-clock-circle");
-
-        d3.range(0, 24).forEach(hour => {
-            const angle = angleScale(hour) - Math.PI / 2;
-            const isMajor = hour % 6 === 0;
-            svg.append("line")
-                .attr("class", "cc-clock-tick")
-                .attr("x1", Math.cos(angle) * radius)
-                .attr("y1", Math.sin(angle) * radius)
-                .attr("x2", Math.cos(angle) * (radius - (isMajor ? 10 : 6)))
-                .attr("y2", Math.sin(angle) * (radius - (isMajor ? 10 : 6)));
-
-            if (isMajor || hour % 2 === 0) {
-                svg.append("text")
-                    .attr("class", "cc-clock-num")
-                    .attr("x", Math.cos(angle) * (radius + 14))
-                    .attr("y", Math.sin(angle) * (radius + 14))
-                    .text(hour);
-            }
-        });
-
-        return svg.append("g").attr("class", "cc-data-layer");
-    }
-
+    // --- 2. UI COMPONENTS ---
     function createLegend() {
-        const legendEl = root.querySelector(".cc-legend");
-        d3.select(legendEl).selectAll("*").remove();
-
-        const legendWidth = 240;
-        const legendHeight = 14;
-        const svg = d3.select(legendEl).append("svg").attr("width", 280).attr("height", 46);
+        const w = 250, h = 15;
+        d3.select("#legend").selectAll("*").remove();
+        const svg = d3.select("#legend").append("svg").attr("width", w + 40).attr("height", 50);
+        
         const defs = svg.append("defs");
-        const gradient = defs.append("linearGradient")
-            .attr("id", "cc-legend-grad")
-            .attr("x1", "0%")
-            .attr("x2", "100%");
-
-        for (let i = 0; i <= 10; i += 1) {
-            const t = i / 10;
-            const v = 0.2 + (0.1 * t);
-            gradient.append("stop")
-                .attr("offset", `${t * 100}%`)
-                .attr("stop-color", colorScale(v));
+        const gradient = defs.append("linearGradient").attr("id", "legend-grad").attr("x1", "0%").attr("x2", "100%");
+        const stops = 10;
+        for (let i = 0; i <= stops; i++) {
+            const val = 0.20 + (i/stops) * 0.10; 
+            gradient.append("stop").attr("offset", (i/stops)*100 + "%").attr("stop-color", colorScale(val));
         }
 
         svg.append("rect")
-            .attr("x", 20)
-            .attr("y", 0)
-            .attr("width", legendWidth)
-            .attr("height", legendHeight)
-            .attr("rx", 999)
-            .attr("fill", "url(#cc-legend-grad)")
-            .attr("stroke", "#000")
-            .attr("stroke-width", 2);
+            .attr("width", w).attr("height", h).attr("x", 20).attr("rx", h/2)
+            .style("fill", "url(#legend-grad)")
+            .style("stroke", "#000").style("stroke-width", "2px");
 
-        const scale = d3.scaleLinear().domain([0.2, 0.3]).range([0, legendWidth]);
-        svg.append("g")
-            .attr("class", "cc-legend-axis")
-            .attr("transform", `translate(20, ${legendHeight + 6})`)
-            .call(d3.axisBottom(scale).ticks(5).tickFormat(d => `${Math.round(d * 100)}%`));
+        const axisScale = d3.scaleLinear().domain([0.20, 0.30]).range([0, w]);
+        const axis = d3.axisBottom(axisScale).ticks(5).tickFormat(d => Math.round(d * 100) + "%");
+        svg.append("g").attr("class", "legend-axis").attr("transform", `translate(20, ${h+8})`).call(axis);
     }
 
-    function setIndicator(id, text, cls) {
-        const el = root.querySelector(id);
-        if (!el) return;
-        el.textContent = text;
-        el.className = `cc-indicator ${cls}`;
+    function initClock(containerId) {
+        d3.select(containerId).selectAll("*").remove();
+        const svg = d3.select(containerId).append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", `translate(${width/2},${height/2})`);
+
+        // Draw clock face border
+        svg.append("circle").attr("r", radius).attr("class", "clock-circle");
+
+        // Draw ticks and numbers
+        d3.range(0, 24).forEach(h => {
+            const angle = angleScale(h) - Math.PI/2; // -PI/2 to start 0 at the top
+            const rMark = radius - 5;
+            const rText = radius + 15;
+            const isMajor = h % 6 === 0;
+
+            svg.append("line")
+                .attr("x1", Math.cos(angle) * radius)
+                .attr("y1", Math.sin(angle) * radius)
+                .attr("x2", Math.cos(angle) * (radius - (isMajor?10:5)))
+                .attr("y2", Math.sin(angle) * (radius - (isMajor?10:5)))
+                .attr("class", "clock-tick");
+
+            if (isMajor || h % 2 === 0) {
+                svg.append("text")
+                    .attr("x", Math.cos(angle) * rText)
+                    .attr("y", Math.sin(angle) * rText)
+                    .attr("class", "clock-num")
+                    .text(h);
+            }
+        });
+
+        svg.append("text").attr("y", -radius - 25).attr("text-anchor", "middle")
+            .style("font-size", "12px").style("fill", "#95a5a6").style("font-weight", "bold")
+            .text("MIDNIGHT");
+
+        return svg.append("g").attr("class", "data-layer");
     }
 
-    function updateStats(metrics, rows) {
-        const weekday = metrics[0];
-        const weekend = metrics[1];
-        if (!weekday || !weekend) return;
+    function updateStats(metrics, rawData) {
+        const wd = metrics[0];
+        const we = metrics[1];
+        if (!wd || !we) return;
 
-        const bedtimeDiff = getTimeDiff(weekday.start, weekend.start);
-        root.querySelector("#cc-stat-bedtime").textContent = formatTimeDiff(bedtimeDiff);
-        if (Math.abs(bedtimeDiff) < 0.5) setIndicator("#cc-ind-bedtime", "Same-ish", "cc-ind-neutral");
-        else if (bedtimeDiff > 0) setIndicator("#cc-ind-bedtime", "Later", "cc-ind-red");
-        else setIndicator("#cc-ind-bedtime", "Earlier", "cc-ind-green");
+        // Bedtime shift
+        const bedDiff = getTimeDiff(wd.start, we.start);
+        d3.select("#stat-bedtime").text(formatTimeDiff(bedDiff));
+        const bedInd = d3.select("#ind-bedtime");
+        if (Math.abs(bedDiff) < 0.5) { bedInd.text("Same-ish").attr("class", "indicator ind-neutral"); }
+        else if (bedDiff > 0) { bedInd.text("Later").attr("class", "indicator ind-red"); }
+        else { bedInd.text("Earlier").attr("class", "indicator ind-green"); }
 
-        const wakeDiff = getTimeDiff(weekday.end, weekend.end);
-        root.querySelector("#cc-stat-wake").textContent = formatTimeDiff(wakeDiff);
-        if (Math.abs(wakeDiff) < 0.5) setIndicator("#cc-ind-wake", "Same-ish", "cc-ind-neutral");
-        else if (wakeDiff > 0) setIndicator("#cc-ind-wake", "Sleeping in", "cc-ind-red");
-        else setIndicator("#cc-ind-wake", "Up early", "cc-ind-green");
+        // Wake time shift
+        const wakeDiff = getTimeDiff(wd.end, we.end);
+        d3.select("#stat-wake").text(formatTimeDiff(wakeDiff));
+        const wakeInd = d3.select("#ind-wake");
+        if (Math.abs(wakeDiff) < 0.5) { wakeInd.text("Same-ish").attr("class", "indicator ind-neutral"); }
+        else if (wakeDiff > 0) { wakeInd.text("Sleeping In").attr("class", "indicator ind-red"); } 
+        else { wakeInd.text("Up Early").attr("class", "indicator ind-green"); }
 
-        const durWkday = (weekday.end < weekday.start ? weekday.end + 24 : weekday.end) - weekday.start;
-        const durWkend = (weekend.end < weekend.start ? weekend.end + 24 : weekend.end) - weekend.start;
-        const durDiff = durWkend - durWkday;
-        root.querySelector("#cc-stat-duration").textContent = formatTimeDiff(durDiff);
-        if (Math.abs(durDiff) < 0.5) setIndicator("#cc-ind-duration", "Equal", "cc-ind-neutral");
-        else if (durDiff > 0) setIndicator("#cc-ind-duration", "Catch-up", "cc-ind-green");
-        else setIndicator("#cc-ind-duration", "Less", "cc-ind-red");
+        // Duration shift
+        const durWd = (wd.end < wd.start ? wd.end + 24 : wd.end) - wd.start;
+        const durWe = (we.end < we.start ? we.end + 24 : we.end) - we.start;
+        const durDiff = durWe - durWd;
+        d3.select("#stat-duration").text(formatTimeDiff(durDiff));
+        const durInd = d3.select("#ind-duration");
+        if (Math.abs(durDiff) < 0.5) { durInd.text("Equal").attr("class", "indicator ind-neutral"); }
+        else if (durDiff > 0) { durInd.text("Catch-up").attr("class", "indicator ind-green"); }
+        else { durInd.text("Less").attr("class", "indicator ind-red"); }
 
-        const avgCaffeine = d3.mean(rows, d => Number(d.caffeine_mg_day1) || 0) || 0;
-        root.querySelector("#cc-stat-caffeine").textContent = Math.round(avgCaffeine);
-        const avgSnore = d3.mean(rows, d => Number(d.snore_frequency) || 0);
-        root.querySelector("#cc-stat-snore").textContent = Number.isFinite(avgSnore) ? avgSnore.toFixed(1) : "--";
-        const avgSedentary = d3.mean(rows, d => Number(d.minutes_sedentary_per_day) || 0) || 0;
-        root.querySelector("#cc-stat-sedentary").textContent = Math.round(avgSedentary);
+        // Habit Stats
+        const avgCaffeine = d3.mean(rawData, d => +d.caffeine_mg_day1 || 0);
+        d3.select("#stat-caffeine").text(Math.round(avgCaffeine));
+
+        const avgSnore = d3.mean(rawData, d => +d.snore_frequency || 0);
+        d3.select("#stat-snore").text(avgSnore ? avgSnore.toFixed(1) : "?");
+
+        const avgSed = d3.mean(rawData, d => +d.minutes_sedentary_per_day || 0);
+        d3.select("#stat-sedentary").text(Math.round(avgSed));
     }
 
-    function showTooltip(event, html) {
-        const rect = root.getBoundingClientRect();
-        tooltip.style("opacity", 1)
-            .html(html)
-            .style("left", `${event.clientX - rect.left + 12}px`)
-            .style("top", `${event.clientY - rect.top + 12}px`);
-    }
-
-    spawnBackground();
-    createLegend();
-
-    const gWeekday = initClock(root.querySelector(".cc-chart-weekday"));
-    const gWeekend = initClock(root.querySelector(".cc-chart-weekend"));
-
+    // --- 3. MAIN DATA LOAD & DRAWING ---
     d3.csv("data/nhanes_2017_mar2020_sleep_merged_extended_clean_with_caffeine.csv").then(data => {
-        data.forEach(d => { d.ccCategory = sleepCategory(d); });
+        data.forEach(d => d.category = getSleepCategory(d));
+        createLegend();
+        const gWeekday = initClock("#chart-weekday");
+        const gWeekend = initClock("#chart-weekend");
 
-        function updateViz(groupId) {
-            const filtered = groupId === "all" ? data : data.filter(d => d.ccCategory === groupId);
+        const updateViz = (groupId) => {
+            const filtered = (groupId === "all") ? data : data.filter(d => d.category === groupId);
 
             const metrics = ["weekday", "weekend"].map(type => {
                 const sCol = `usual_sleep_time_${type}_hhmm`;
                 const wCol = `usual_wake_time_${type}_hhmm`;
                 const valid = filtered.filter(d => d[sCol] && d[wCol]);
                 if (!valid.length) return null;
-
-                const processTime = t => t < 12 ? t + 24 : t;
+                const processTime = (t) => t < 12 ? t + 24 : t;
                 const avgStart = d3.mean(valid, d => processTime(parseTime(d[sCol])));
                 const avgEnd = d3.mean(valid, d => processTime(parseTime(d[wCol])));
-                const troubleRate = d3.mean(valid, d => Number(d.told_doctor_trouble_sleeping) === 1 ? 1 : 0);
-
-                return { type, start: avgStart % 24, end: avgEnd % 24, rate: troubleRate };
+                const trouble = d3.mean(valid, d => d.told_doctor_trouble_sleeping == 1 ? 1 : 0);
+                return { type, start: avgStart%24, end: avgEnd%24, rate: trouble };
             });
 
             updateStats(metrics, filtered);
 
-            function draw(selection, datum) {
-                selection.selectAll(".cc-sector").remove();
-                if (!datum) return;
-
-                const arc = d3.arc()
+            const draw = (selection, datum) => {
+                if (!datum) { selection.selectAll(".sector").remove(); return; }
+                
+                const arcGenerator = d3.arc()
                     .innerRadius(0)
                     .outerRadius(radius - 10)
-                    .cornerRadius(cornerRadius)
-                    .startAngle(angleScale(datum.start))
-                    .endAngle(() => {
-                        let end = angleScale(datum.end);
-                        if (datum.end < datum.start) end += 2 * Math.PI;
-                        return end;
-                    });
+                    .cornerRadius(cornerRadius);
 
-                selection.append("path")
-                    .attr("class", "cc-sector")
-                    .attr("fill", colorScale(datum.rate))
-                    .attr("d", arc)
-                    .on("mousemove", event => {
-                        const fmt = t => `${Math.floor(t)}:${Math.round((t % 1) * 60).toString().padStart(2, "0")}`;
-                        const duration = (datum.end < datum.start ? datum.end + 24 : datum.end) - datum.start;
-                        showTooltip(event, `
-                            <div><strong>${datum.type.toUpperCase()}</strong></div>
-                            <div>${fmt(datum.start)} - ${fmt(datum.end)}</div>
-                            <div>${duration.toFixed(1)} hrs</div>
-                            <div>Rate: ${(datum.rate * 100).toFixed(1)}%</div>
-                        `);
-                    })
-                    .on("mouseleave", () => tooltip.style("opacity", 0));
-            }
+                const paths = selection.selectAll(".sector").data([datum]);
+                
+                paths.join(
+                    enter => enter.append("path")
+                        .attr("class", "sector")
+                        .each(function(d) {
+                            // Calculate initial angles properly
+                            let sAngle = angleScale(d.start);
+                            let eAngle = angleScale(d.end);
+                            if (eAngle < sAngle) eAngle += 2 * Math.PI; // Wrap around midnight
+                            
+                            // Store the actual angles for future transitions
+                            this._current = { startAngle: sAngle, endAngle: eAngle }; 
+                        })
+                        .attr("d", function(d) {
+                            return arcGenerator(this._current);
+                        })
+                        .attr("fill", d => colorScale(d.rate))
+                        .style("opacity", 0)
+                        .call(enter => enter.transition().duration(800).style("opacity", 1)),
+                        
+                    update => update.transition().duration(800)
+                        .attr("fill", d => colorScale(d.rate))
+                        .attrTween("d", function(d) {
+                            let oldState = this._current;
+                            let newStartAngle = angleScale(d.start);
 
+                            // --- SHORTEST PATH LOGIC ---
+                            // If the new angle is more than half a circle away, wrap it around
+                            // so the animation takes the shortest route across midnight.
+                            while (newStartAngle - oldState.startAngle > Math.PI) {
+                                newStartAngle -= 2 * Math.PI;
+                            }
+                            while (newStartAngle - oldState.startAngle < -Math.PI) {
+                                newStartAngle += 2 * Math.PI;
+                            }
+
+                            // Calculate the total duration in radians to maintain arc size
+                            let durationHours = (d.end < d.start ? d.end + 24 : d.end) - d.start;
+                            let durationRadians = (durationHours / 24) * 2 * Math.PI;
+                            let newEndAngle = newStartAngle + durationRadians;
+
+                            // Create interpolators for smooth frame-by-frame rendering
+                            let iStart = d3.interpolate(oldState.startAngle, newStartAngle);
+                            let iEnd = d3.interpolate(oldState.endAngle, newEndAngle);
+
+                            // Store the new target angles for the NEXT time the user clicks a button
+                            this._current = { startAngle: newStartAngle, endAngle: newEndAngle };
+
+                            return function(t) {
+                                return arcGenerator({
+                                    startAngle: iStart(t),
+                                    endAngle: iEnd(t)
+                                });
+                            };
+                        })
+                )
+                .on("mouseover", (e, d) => {
+                    const fmt = t => `${Math.floor(t)}:${Math.round((t%1)*60).toString().padStart(2,'0')}`;
+                    const dur = (d.end < d.start ? d.end+24 : d.end) - d.start;
+                    tooltip.style("opacity", 1)
+                        .html(`<div><strong>${d.type.toUpperCase()}</strong></div>
+                               <div>🛏️ ${fmt(d.start)} - ${fmt(d.end)}</div>
+                               <div>⏳ ${dur.toFixed(1)} hrs</div>
+                               <div style="margin-top:5px; color:${d3.interpolateRdYlBu(1-(d.rate-0.15)/0.2)}">
+                                  Trouble Sleeping: ${(d.rate*100).toFixed(1)}%
+                               </div>`);
+                })
+                .on("mousemove", e => tooltip.style("left", e.pageX+"px").style("top", e.pageY+"px"))
+                .on("mouseout", () => tooltip.style("opacity", 0));
+            };
+            
             draw(gWeekday, metrics[0]);
             draw(gWeekend, metrics[1]);
-        }
+        };
 
-        root.querySelectorAll(".cc-toggle-btn").forEach(button => {
-            button.addEventListener("click", () => {
-                root.querySelectorAll(".cc-toggle-btn").forEach(b => b.classList.remove("active"));
-                button.classList.add("active");
-                updateViz(button.getAttribute("data-val"));
-            });
+        // Handle button clicks
+        d3.selectAll(".toggle-btn").on("click", function() {
+            d3.selectAll(".toggle-btn").classed("active", false);
+            d3.select(this).classed("active", true);
+            updateViz(d3.select(this).attr("data-val"));
         });
 
+        // Init view
         updateViz("all");
+    }).catch(error => {
+        console.error("Error loading CSV data:", error);
     });
-}());
+});

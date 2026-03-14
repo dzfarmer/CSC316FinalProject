@@ -15,6 +15,45 @@
     bmi: "#e8b88a"
   };
 
+  /** Instructions for each level (0–4) per key. Shown when user selects a level. */
+  var INSTRUCTIONS = {
+    age: {
+      0: "Not selected",
+      1: "Under 20",
+      2: "20–40",
+      3: "41–60",
+      4: "80+"
+    },
+    weekend: {
+      0: "Not selected",
+      1: "No weekend shift (same wake time)",
+      2: "Up to 1 hour shift",
+      3: "1–2 hours shift",
+      4: "2+ hours shift"
+    },
+    coffee: {
+      0: "Not selected",
+      1: "None or very little",
+      2: "1–2 cups per day",
+      3: "3–4 cups per day",
+      4: "5+ cups per day"
+    },
+    activity: {
+      0: "Not selected",
+      1: "Low / sedentary",
+      2: "Light activity",
+      3: "Moderate activity",
+      4: "High / very active"
+    },
+    bmi: {
+      0: "Not selected",
+      1: "Underweight",
+      2: "Normal",
+      3: "Overweight",
+      4: "Obese"
+    }
+  };
+
   var levels = { age: 1, weekend: 0, coffee: 1, activity: 2, bmi: 0 };
 
   function id(name) {
@@ -25,10 +64,14 @@
     var l = levels[key];
     var fill = id("fill-" + key);
     var levelEl = id("level-" + key);
+    var descEl = id("desc-" + key);
     if (!fill || !levelEl) return;
     fill.style.height = (l / MAX_LEVEL) * 100 + "%";
     fill.style.backgroundColor = colors[key];
     levelEl.textContent = l;
+    if (descEl && INSTRUCTIONS[key] && INSTRUCTIONS[key][l] !== undefined) {
+      descEl.textContent = INSTRUCTIONS[key][l];
+    }
   }
 
   function cycleLevel(key) {

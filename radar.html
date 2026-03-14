@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Radar Visualization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/radar.css" />
+  <style>
+    html, body { margin: 0; padding: 0; }
+    body { background: transparent; }
+    body::before, body::after { content: none !important; }
+    .radar-page { padding: 0; }
+  </style>
+</head>
+<body>
+  <div class="radar-page" id="viz5">
+    <div class="chart heatmap-wrap radar-wrap"
+         id="sleep-radar"
+         role="img"
+         aria-label="Radar chart for stability, caffeine, sedentary time, activity, and BMI">
+      <div class="heatmap-controls card-toggle radar-notes">
+        <div class="toggle-header">✨ Cluster Toggle</div>
+        <div class="toggle-buttons radar-cluster-buttons" id="radarClusterButtons"></div>
+        <div class="toggle-buttons radar-group-buttons" id="radarGroupButtons"></div>
+        <div class="controls-hint">Hover a cluster on the radar to see details</div>
+        <div class="radar-cluster-legend" id="radarClusterLegend"></div>
+      </div>
+
+      <div class="heatmap-stage radar-stage">
+        <svg id="sleep-radar-chart" width="980" height="560"></svg>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="js/sleepRadar.js"></script>
+</body>
+</html>

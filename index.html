@@ -123,100 +123,99 @@
         </div>
 
         <div class="viz-grid">
-          <div class="card viz-card">
+          <div class="card viz-card" style="position: relative; overflow: hidden; min-height: 750px; display: flex; flex-direction: column;">
+            
             <div class="viz-toolbar">
               <span class="pill">Cartoon Clock</span>
-</div>
+            </div>
 
-            <div class="chart chart-clean" role="img" aria-label="Cartoon clock sleep visualization">
-              <div id="cartoon-clock-viz" class="cc-root">
-                <div class="cc-dashboard">
-                  <h3 class="cc-title">Sleepy Time</h3>
-                  <p class="cc-subtitle">A cartoon look at our zzz's and habits!</p>
-
-                  <div class="cc-controls">
-                    <div class="cc-toggle-container">
-                      <button class="cc-toggle-btn active" data-val="all" type="button">Everyone</button>
-                      <button class="cc-toggle-btn" data-val="weekday_sleeper" type="button">Week-day Sleepers</button>
-                      <button class="cc-toggle-btn" data-val="stable" type="button">Regular Sleepers</button>
-                      <button class="cc-toggle-btn" data-val="weekend_sleeper" type="button">Weekend Sleepers</button>
-                    </div>
+            <div class="chart chart-clean" role="img" aria-label="Cartoon clock sleep visualization" style="z-index: 10; width: 100%; display: flex; justify-content: center; padding: 20px 10px;">
+              
+              <div class="dashboard" style="width: 100%; max-width: 900px; position: relative;">
+                  <h1 style="text-align: center;">Sleepy Time</h1>
+                  <p class="subtitle" style="text-align: center;">A cartoon look at our zzz's and habits!</p>
+                  
+                  <div class="controls" style="text-align: center; margin-bottom: 20px;">
+                      <div class="toggle-container">
+                          <button class="toggle-btn active" data-val="all">Everyone</button>
+                          <button class="toggle-btn" data-val="weekday_sleeper">Week-day Sleepers</button>
+                          <button class="toggle-btn" data-val="stable">Regular Sleepers</button>
+                          <button class="toggle-btn" data-val="weekend_sleeper">Weekend Sleepers</button>
+                      </div>
                   </div>
 
-                  <div class="cc-charts-container">
-                    <div class="cc-clock-wrapper">
-                      <div class="cc-chart-weekday"></div>
-                      <div class="cc-clock-label">Weekday</div>
-                    </div>
-                    <div class="cc-clock-wrapper">
-                      <div class="cc-chart-weekend"></div>
-                      <div class="cc-clock-label">Weekend</div>
-                    </div>
+                  <div class="charts-container">
+                      <div class="clock-wrapper">
+                          <div id="chart-weekday"></div>
+                          <div class="clock-label">Weekday 🏢</div>
+                      </div>
+                      <div class="clock-wrapper">
+                          <div id="chart-weekend"></div>
+                          <div class="clock-label">Weekend 🎡</div>
+                      </div>
                   </div>
 
-                  <div class="cc-stats-section-title">Sleep Schedule</div>
-                  <div class="cc-stats-grid">
-                    <div class="cc-stat-card">
-                      <div class="cc-stat-label">Bedtime Shift</div>
-                      <div class="cc-stat-value" id="cc-stat-bedtime">--</div>
-                      <div class="cc-stat-desc">Diff from weekday to weekend</div>
-                      <div class="cc-indicator" id="cc-ind-bedtime">--</div>
-                    </div>
-                    <div class="cc-stat-card">
-                      <div class="cc-stat-label">Wake-up Shift</div>
-                      <div class="cc-stat-value" id="cc-stat-wake">--</div>
-                      <div class="cc-stat-desc">Diff from weekday to weekend</div>
-                      <div class="cc-indicator" id="cc-ind-wake">--</div>
-                    </div>
-                    <div class="cc-stat-card">
-                      <div class="cc-stat-label">Net Sleep</div>
-                      <div class="cc-stat-value" id="cc-stat-duration">--</div>
-                      <div class="cc-stat-desc">Weekend minus weekday duration</div>
-                      <div class="cc-indicator" id="cc-ind-duration">--</div>
-                    </div>
+                  <div class="stats-section-title">⏰ The Sleep Schedule</div>
+                  <div class="stats-grid">
+                      <div class="stat-card">
+                          <div class="stat-emoji">🌙</div>
+                          <div class="stat-label">Bedtime Shift</div>
+                          <div class="stat-value" id="stat-bedtime">--</div>
+                          <div class="stat-desc">Diff from Mon to Sun</div>
+                          <div class="indicator" id="ind-bedtime">--</div>
+                      </div>
+                      <div class="stat-card">
+                          <div class="stat-emoji">☀️</div>
+                          <div class="stat-label">Wake-up Shift</div>
+                          <div class="stat-value" id="stat-wake">--</div>
+                          <div class="stat-desc">Diff from Mon to Sun</div>
+                          <div class="indicator" id="ind-wake">--</div>
+                      </div>
+                      <div class="stat-card">
+                          <div class="stat-emoji">🔋</div>
+                          <div class="stat-label">Net Sleep</div>
+                          <div class="stat-value" id="stat-duration">--</div>
+                          <div class="stat-desc">Extra sleep on weekend</div>
+                          <div class="indicator" id="ind-duration">--</div>
+                      </div>
                   </div>
 
-                  <div class="cc-stats-section-title">Habits</div>
-                  <div class="cc-stats-grid">
-                    <div class="cc-stat-card">
-                      <div class="cc-stat-label">Caffeine (mg)</div>
-                      <div class="cc-stat-value" id="cc-stat-caffeine">--</div>
-                    </div>
-                    <div class="cc-stat-card">
-                      <div class="cc-stat-label">Snore Score</div>
-                      <div class="cc-stat-value" id="cc-stat-snore">--</div>
-                    </div>
-                    <div class="cc-stat-card">
-                      <div class="cc-stat-label">Sedentary (min/day)</div>
-                      <div class="cc-stat-value" id="cc-stat-sedentary">--</div>
-                    </div>
+                  <div class="stats-section-title">🍕 Habits & Quirks</div>
+                  <div class="stats-grid">
+                      <div class="stat-card" style="border-color:#d35400;">
+                          <div class="stat-emoji">☕</div>
+                          <div class="stat-label">Caffeine</div>
+                          <div class="stat-value" id="stat-caffeine">--</div>
+                          <div class="stat-desc">Daily intake (mg)</div>
+                      </div>
+                      <div class="stat-card" style="border-color:#8e44ad;">
+                          <div class="stat-emoji">😴</div>
+                          <div class="stat-label">Snore Score</div>
+                          <div class="stat-value" id="stat-snore">--</div>
+                          <div class="stat-desc">How often they snore (0-4)</div>
+                      </div>
+                      <div class="stat-card" style="border-color:#27ae60;">
+                          <div class="stat-emoji">🥔</div>
+                          <div class="stat-label">Lazy Time</div>
+                          <div class="stat-value" id="stat-sedentary">--</div>
+                          <div class="stat-desc">Sitting mins/day</div>
+                      </div>
                   </div>
 
-                  <div class="cc-legend-container">
-                    <div class="cc-legend-title">Trouble Sleeping Rate</div>
-                    <div class="cc-legend"></div>
+                  <div class="legend-container">
+                      <div class="legend-title" style="text-align: center;">Trouble Sleeping Rate (Blue=Good, Red=Bad)</div>
+                      <div id="legend" style="display: flex; justify-content: center;"></div>
                   </div>
-                </div>
               </div>
+              
             </div>
-</div>
+            
+            <div id="tooltip" class="tooltip"></div>
 
-          <!-- <div class="card">
-            <h3>What this could show</h3>
-            <ul class="bullets">
-              <li>Does more sleep usually match better quality?</li>
-              <li>Are there outliers after late nights?</li>
-              <li>Is there a sweet spot that feels best?</li>
-            </ul>
-
-            <div class="note">
-              <strong>Data placeholder:</strong> <code>data/sleep.csv</code>
-            </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </section>
-
     <!-- 4) Insight text page 1 -->
     <section id="insight1" class="panel bg-mint">
       <div class="container">

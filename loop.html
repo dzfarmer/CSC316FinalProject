@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Behavior Loop</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      background: linear-gradient(180deg, #fff4dd 0%, #fffaf2 100%);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      color: #1f2430;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 18px 42px rgba(31,36,48,0.08);
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(111,133,255,0.12);
+      color: #6f85ff;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: #667085;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <div class="badge">Main message</div>
+      <h2>Behavior Loop</h2>
+      <p>
+        Sleep loss does not stay isolated. It can trigger coffee use, fatigue,
+        less movement, and then feed back into unstable sleep again.
+      </p>
+
+      <svg id="loopChart" viewBox="0 0 960 420" aria-label="Behavior loop diagram"></svg>
+    </div>
+  </div>
+
+  <script>
+    function renderLoopChart() {
+      const svg = d3.select("#loopChart");
+      svg.selectAll("*").remove();
+
+      const width = 960;
+      const height = 420;
+
+      const nodes = [
+        { name: "Sleep loss",    x: 180, y: 90,  color: "#7b8cff" },
+        { name: "Coffee",        x: 470, y: 90,  color: "#f5b971" },
+        { name: "Fatigue",       x: 760, y: 180, color: "#ef8a7a" },
+        { name: "Less movement", x: 650, y: 330, color: "#9ac7f0" },
+        { name: "Unstable sleep",x: 290, y: 330, color: "#c3a6e8" }
+      ];
+
+      const links = [[0,1],[1,2],[2,3],[3,4],[4,0]];
+
+      const defs = svg.append("defs");
+      defs.append("marker")
+        .attr("id", "arrowhead")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 9)
+        .attr("refY", 0)
+        .attr("markerWidth", 8)
+        .attr("markerHeight", 8)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("d", "M0,-5L10,0L0,5")
+        .attr("fill", "#9da6bb");
+
+      svg.selectAll(".loop-link")
+        .data(links)
+        .join("path")
+        .attr("d", d => {
+          const s = nodes[d[0]];
+          const t = nodes[d[1]];
+          return `M${s.x},${s.y} Q${(s.x+t.x)/2},${(s.y+t.y)/2 - 40} ${t.x},${t.y}`;
+        })
+        .attr("fill", "none")
+        .attr("stroke", "#9da6bb")
+        .attr("stroke-width", 3)
+        .attr("marker-end", "url(#arrowhead)");
+
+      const g = svg.selectAll(".loop-node")
+        .data(nodes)
+        .join("g")
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+
+      g.append("circle")
+        .attr("r", 48)
+        .attr("fill", d => d.color)
+        .attr("opacity", 0.95)
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 4);
+
+      g.append("text")
+        .attr("text-anchor", "middle")
+        .attr("dy", 5)
+        .attr("fill", "#1f2430")
+        .attr("font-weight", 800)
+        .attr("font-size", 14)
+        .text(d => d.name);
+    }
+
+    renderLoopChart();
+  </script>
+</body>
+</html>

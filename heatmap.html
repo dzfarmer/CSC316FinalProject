@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Caffeine Heatmap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/heatmap.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      background: linear-gradient(135deg, #fbeaff, #e6f7ff);
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .heatmap-page {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .container {
+      display: block;
+      background: white;
+      padding: 28px;
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    h3 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-weight: 800;
+      font-size: 24px;
+      color: #5a4fcf;
+    }
+    .controls {
+      background: #f6f0ff;
+      padding: 18px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      margin-bottom: 18px;
+    }
+    .controls-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #7c6cff;
+    }
+    #ageButtons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .age-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: #ffffff;
+      color: #5a4fcf;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: inset 0 0 0 2px #e4dbff;
+      transition: 0.2s ease;
+    }
+    .age-btn.active {
+      background: #7c6cff;
+      color: white;
+      box-shadow: none;
+    }
+    .controls-hint {
+      margin-top: 10px;
+      color: #7b7b93;
+      font-size: 0.92rem;
+    }
+    #chart {
+      display: block;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 980px;
+      height: auto;
+      background: #fff9ff;
+      border-radius: 22px;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.04);
+    }
+    .axis-text {
+      font-size: 14px;
+      font-weight: 700;
+      fill: #4d4d68;
+    }
+    .axis-line {
+      stroke: rgba(0,0,0,0.12);
+    }
+    .axis-label {
+      font-size: 18px;
+      font-weight: 800;
+      fill: #4d4d68;
+    }
+    .label {
+      font-weight: 800;
+      font-size: 13px;
+      fill: #222;
+      paint-order: stroke;
+      stroke: rgba(255,255,255,0.75);
+      stroke-width: 4px;
+    }
+    .legend-title {
+      font-weight: 800;
+      fill: #4d4d68;
+    }
+    .legend-tick {
+      font-size: 12px;
+      fill: #666;
+      font-weight: 700;
+    }
+    .legend-line {
+      stroke: rgba(0,0,0,0.18);
+    }
+    .heatmap-tooltip {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      background: white;
+      color: #333;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 12px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      border: 2px solid #ffe6fa;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div class="heatmap-page">
+    <div class="container">
+      <h3>Interactive Heatmap</h3>
+
+      <div class="controls">
+        <div class="controls-title">Toggle: Age</div>
+        <div id="ageButtons"></div>
+        <div class="controls-hint">Cmd/Ctrl to select more</div>
+      </div>
+
+      <svg id="chart" width="980" height="520" role="img" aria-label="Caffeine heatmap"></svg>
+    </div>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="js/caffeineHeatmap.js"></script>
+</body>
+</html>

@@ -87,7 +87,7 @@ g.append("text")
 g.append("text")
     .attr("class", "axis-label")
     .attr("x", -innerH / 2)
-    .attr("y", -68)
+    .attr("y", -90)
     .attr("transform", "rotate(-90)")
     .attr("text-anchor", "middle")
     .text("Sleep time");

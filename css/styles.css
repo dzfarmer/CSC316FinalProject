@@ -559,14 +559,257 @@ p {
   color: #3b2d28;
 }
 
+.sleep-score-desc {
+  display: block;
+  font-size: 0.65rem;
+  line-height: 1.25;
+  color: #5c4d44;
+  margin-top: 4px;
+  min-height: 2.5em;
+}
+
+.sleep-score-pour-stage {
+  position: relative;
+}
+
+.sleep-score-bottle-zone .sleep-score-pour-tracks {
+  margin-top: 0;
+  margin-bottom: -4px;
+  padding-bottom: 0;
+}
+
+.sleep-score-pour-tracks {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 22px;
+  flex-wrap: nowrap;
+  margin: 4px 0 -4px;
+  min-height: 56px;
+  position: relative;
+  z-index: 1;
+}
+
+.sleep-score-pour-track {
+  min-width: 88px;
+  flex: 0 0 auto;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.sleep-score-pour-stream {
+  width: 9px;
+  height: 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transform-origin: top center;
+}
+
+.sleep-score-pour-stream--empty {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+.sleep-score-pouring .sleep-score-pour-stream:not(.sleep-score-pour-stream--empty) {
+  animation: sleep-score-pour-line 0.78s ease-out forwards;
+}
+
+.sleep-score-pour-track:nth-child(1) .sleep-score-pour-stream {
+  transform: rotate(-28deg);
+}
+
+.sleep-score-pour-track:nth-child(2) .sleep-score-pour-stream {
+  transform: rotate(-14deg);
+}
+
+.sleep-score-pour-track:nth-child(3) .sleep-score-pour-stream {
+  transform: rotate(0deg);
+}
+
+.sleep-score-pour-track:nth-child(4) .sleep-score-pour-stream {
+  transform: rotate(14deg);
+}
+
+.sleep-score-pour-track:nth-child(5) .sleep-score-pour-stream {
+  transform: rotate(28deg);
+}
+
+.sleep-score-pour-track:nth-child(1) .sleep-score-pour-stream:not(.sleep-score-pour-stream--empty) {
+  animation-delay: 0.04s;
+}
+
+.sleep-score-pour-track:nth-child(2) .sleep-score-pour-stream:not(.sleep-score-pour-stream--empty) {
+  animation-delay: 0.12s;
+}
+
+.sleep-score-pour-track:nth-child(3) .sleep-score-pour-stream:not(.sleep-score-pour-stream--empty) {
+  animation-delay: 0.2s;
+}
+
+.sleep-score-pour-track:nth-child(4) .sleep-score-pour-stream:not(.sleep-score-pour-stream--empty) {
+  animation-delay: 0.28s;
+}
+
+.sleep-score-pour-track:nth-child(5) .sleep-score-pour-stream:not(.sleep-score-pour-stream--empty) {
+  animation-delay: 0.36s;
+}
+
+@keyframes sleep-score-pour-line {
+  from {
+    height: 0;
+    opacity: 0.35;
+  }
+
+  to {
+    height: 100%;
+    opacity: 0.95;
+  }
+}
+
+.sleep-score-bottle-fill-flash {
+  animation: sleep-score-bottle-glow 0.55s ease;
+}
+
+@keyframes sleep-score-bottle-glow {
+  0% {
+    box-shadow: inset 0 -8px 18px rgba(0, 0, 0, 0.04);
+  }
+
+  45% {
+    box-shadow:
+      inset 0 -8px 18px rgba(0, 0, 0, 0.04),
+      0 0 0 3px rgba(240, 180, 64, 0.35);
+  }
+
+  100% {
+    box-shadow: inset 0 -8px 18px rgba(0, 0, 0, 0.04);
+  }
+}
+
+.sleep-score-btn-pour:disabled {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
+}
+
+.sleep-score-wrap--compact {
+  max-width: 680px;
+}
+
+.sleep-score-wrap--compact .sleep-score-title {
+  margin-bottom: 10px;
+}
+
+.sleep-score-wrap--compact .sleep-score-title h3 {
+  font-size: 1.3rem;
+}
+
+.sleep-score-wrap--compact .sleep-score-panel {
+  padding: 12px 14px;
+}
+
+.sleep-score-wrap--compact .sleep-score-panel h4 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.sleep-score-wrap--compact .sleep-score-hint {
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.sleep-score-wrap--compact .sleep-score-potions {
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.sleep-score-wrap--compact .sleep-score-potion-wrap {
+  min-width: 58px;
+  max-width: 74px;
+}
+
+.sleep-score-wrap--compact .sleep-score-potion-wrap label {
+  font-size: 0.68rem;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.sleep-score-wrap--compact .sleep-score-potion {
+  width: 44px;
+  height: 76px;
+  border-width: 3px;
+  border-radius: 11px;
+}
+
+.sleep-score-wrap--compact .sleep-score-level {
+  font-size: 0.8rem;
+  margin-top: 3px;
+}
+
+.sleep-score-wrap--compact .sleep-score-desc {
+  font-size: 0.55rem;
+  min-height: 2.4em;
+  margin-top: 2px;
+}
+
+.sleep-score-wrap--compact .sleep-score-pour-tracks {
+  gap: 8px;
+  margin-top: 0;
+  margin-bottom: -3px;
+  min-height: 44px;
+}
+
+.sleep-score-wrap--compact .sleep-score-pour-track {
+  min-width: 58px;
+  max-width: 74px;
+  height: 44px;
+}
+
+.sleep-score-wrap--compact .sleep-score-bottle-zone {
+  margin: 10px 0 8px;
+}
+
+.sleep-score-wrap--compact .sleep-score-bottle-label {
+  font-size: 0.75rem;
+  margin-bottom: 2px;
+}
+
+.sleep-score-wrap--compact .sleep-score-bottle {
+  width: 88px;
+  height: 132px;
+  border-width: 4px;
+  border-radius: 14px;
+}
+
+.sleep-score-wrap--compact .sleep-score-btn-pour {
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sleep-score-pouring .sleep-score-pour-stream {
+    animation: none !important;
+  }
+
+  .sleep-score-bottle-fill-flash {
+    animation: none !important;
+  }
+}
+
 .sleep-score-bottle-zone {
   text-align: center;
-  margin: 24px 0;
+  margin: 20px 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sleep-score-bottle-label {
   font-weight: 800;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   color: #3b2d28;
 }
 

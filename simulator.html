@@ -27,7 +27,7 @@
 </head>
 <body>
   <div class="sim-page">
-    <section id="sleep-score" class="sleep-score-wrap">
+    <section id="sleep-score" class="sleep-score-wrap sleep-score-wrap--compact">
       <header class="sleep-score-title">
         <span class="sleep-score-sparkle">✨</span>
         <h3>Solution: Your Sleep Score</h3>
@@ -40,58 +40,72 @@
           Click each bottle to change how much you pour. Then pour into the big bottle!
         </p>
 
-        <div class="sleep-score-potions" role="group" aria-label="Potion levels">
-          <div class="sleep-score-potion-wrap">
-            <label>Age</label>
-            <div class="sleep-score-potion" id="sleep-score-potion-age" tabindex="0" role="button" aria-label="Age potion, click to change level">
-              <div class="sleep-score-potion-fill" id="sleep-score-fill-age"></div>
+        <div class="sleep-score-pour-stage" id="sleep-score-pour-stage">
+          <div class="sleep-score-potions" role="group" aria-label="Potion levels">
+            <div class="sleep-score-potion-wrap">
+              <label>Age</label>
+              <div class="sleep-score-potion" id="sleep-score-potion-age" tabindex="0" role="button" aria-label="Age potion, click to change level">
+                <div class="sleep-score-potion-fill" id="sleep-score-fill-age"></div>
+              </div>
+              <span class="sleep-score-level" id="sleep-score-level-age">1</span>
+              <span class="sleep-score-desc" id="sleep-score-desc-age" aria-live="polite"></span>
             </div>
-            <span class="sleep-score-level" id="sleep-score-level-age">1</span>
+
+            <div class="sleep-score-potion-wrap">
+              <label>Weekend shift</label>
+              <div class="sleep-score-potion" id="sleep-score-potion-weekend" tabindex="0" role="button" aria-label="Weekend shift potion">
+                <div class="sleep-score-potion-fill" id="sleep-score-fill-weekend"></div>
+              </div>
+              <span class="sleep-score-level" id="sleep-score-level-weekend">0</span>
+              <span class="sleep-score-desc" id="sleep-score-desc-weekend" aria-live="polite"></span>
+            </div>
+
+            <div class="sleep-score-potion-wrap">
+              <label>Coffee</label>
+              <div class="sleep-score-potion" id="sleep-score-potion-coffee" tabindex="0" role="button" aria-label="Coffee potion">
+                <div class="sleep-score-potion-fill" id="sleep-score-fill-coffee"></div>
+              </div>
+              <span class="sleep-score-level" id="sleep-score-level-coffee">1</span>
+              <span class="sleep-score-desc" id="sleep-score-desc-coffee" aria-live="polite"></span>
+            </div>
+
+            <div class="sleep-score-potion-wrap">
+              <label>Activity</label>
+              <div class="sleep-score-potion" id="sleep-score-potion-activity" tabindex="0" role="button" aria-label="Activity potion">
+                <div class="sleep-score-potion-fill" id="sleep-score-fill-activity"></div>
+              </div>
+              <span class="sleep-score-level" id="sleep-score-level-activity">2</span>
+              <span class="sleep-score-desc" id="sleep-score-desc-activity" aria-live="polite"></span>
+            </div>
+
+            <div class="sleep-score-potion-wrap">
+              <label>BMI</label>
+              <div class="sleep-score-potion" id="sleep-score-potion-bmi" tabindex="0" role="button" aria-label="BMI potion">
+                <div class="sleep-score-potion-fill" id="sleep-score-fill-bmi"></div>
+              </div>
+              <span class="sleep-score-level" id="sleep-score-level-bmi">0</span>
+              <span class="sleep-score-desc" id="sleep-score-desc-bmi" aria-live="polite"></span>
+            </div>
           </div>
 
-          <div class="sleep-score-potion-wrap">
-            <label>Weekend shift</label>
-            <div class="sleep-score-potion" id="sleep-score-potion-weekend" tabindex="0" role="button" aria-label="Weekend shift potion">
-              <div class="sleep-score-potion-fill" id="sleep-score-fill-weekend"></div>
+          <div class="sleep-score-bottle-zone">
+            <div class="sleep-score-bottle-label">Sleep potion bottle</div>
+            <div class="sleep-score-pour-tracks" id="sleep-score-pour-tracks" aria-hidden="true">
+              <div class="sleep-score-pour-track"><div class="sleep-score-pour-stream" id="sleep-score-pour-stream-age"></div></div>
+              <div class="sleep-score-pour-track"><div class="sleep-score-pour-stream" id="sleep-score-pour-stream-weekend"></div></div>
+              <div class="sleep-score-pour-track"><div class="sleep-score-pour-stream" id="sleep-score-pour-stream-coffee"></div></div>
+              <div class="sleep-score-pour-track"><div class="sleep-score-pour-stream" id="sleep-score-pour-stream-activity"></div></div>
+              <div class="sleep-score-pour-track"><div class="sleep-score-pour-stream" id="sleep-score-pour-stream-bmi"></div></div>
             </div>
-            <span class="sleep-score-level" id="sleep-score-level-weekend">0</span>
+            <div class="sleep-score-bottle" id="sleep-score-bottle" aria-label="Mixed sleep potion bottle">
+              <div id="sleep-score-bottle-layers"></div>
+            </div>
           </div>
 
-          <div class="sleep-score-potion-wrap">
-            <label>Coffee</label>
-            <div class="sleep-score-potion" id="sleep-score-potion-coffee" tabindex="0" role="button" aria-label="Coffee potion">
-              <div class="sleep-score-potion-fill" id="sleep-score-fill-coffee"></div>
-            </div>
-            <span class="sleep-score-level" id="sleep-score-level-coffee">1</span>
-          </div>
-
-          <div class="sleep-score-potion-wrap">
-            <label>Activity</label>
-            <div class="sleep-score-potion" id="sleep-score-potion-activity" tabindex="0" role="button" aria-label="Activity potion">
-              <div class="sleep-score-potion-fill" id="sleep-score-fill-activity"></div>
-            </div>
-            <span class="sleep-score-level" id="sleep-score-level-activity">2</span>
-          </div>
-
-          <div class="sleep-score-potion-wrap">
-            <label>BMI</label>
-            <div class="sleep-score-potion" id="sleep-score-potion-bmi" tabindex="0" role="button" aria-label="BMI potion">
-              <div class="sleep-score-potion-fill" id="sleep-score-fill-bmi"></div>
-            </div>
-            <span class="sleep-score-level" id="sleep-score-level-bmi">0</span>
-          </div>
+          <button type="button" class="sleep-score-btn-pour" id="sleep-score-btn-pour">
+            Pour into bottle →
+          </button>
         </div>
-
-        <div class="sleep-score-bottle-zone">
-          <div class="sleep-score-bottle-label">Sleep potion bottle</div>
-          <div class="sleep-score-bottle" id="sleep-score-bottle" aria-label="Mixed sleep potion bottle">
-            <div id="sleep-score-bottle-layers"></div>
-          </div>
-        </div>
-
-        <button type="button" class="sleep-score-btn-pour" id="sleep-score-btn-pour">
-          Pour into bottle →
-        </button>
       </div>
 
       <div class="sleep-score-output" id="sleep-score-output" aria-live="polite" hidden>

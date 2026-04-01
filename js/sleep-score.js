@@ -77,6 +77,7 @@
   function cycleLevel(key) {
     levels[key] = (levels[key] + 1) % (MAX_LEVEL + 1);
     updatePotion(key);
+    syncPourStreams();
   }
 
   function getRiskFromLevels() {
@@ -123,6 +124,46 @@
     });
   }
 
+  var POUR_ANIM_MS = 920;
+
+  function syncPourStreams() {
+    KEYS.forEach(function (key) {
+      var stream = id("pour-stream-" + key);
+      if (!stream) return;
+      stream.style.backgroundColor = colors[key];
+      var l = levels[key];
+      stream.classList.toggle("sleep-score-pour-stream--empty", l === 0);
+    });
+  }
+
+  function runPourAnimation(callback) {
+    var stage = id("pour-stage");
+    syncPourStreams();
+    if (!stage) {
+      callback();
+      return;
+    }
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      window.setTimeout(callback, 0);
+      return;
+    }
+    stage.classList.remove("sleep-score-pouring");
+    void stage.offsetWidth;
+    stage.classList.add("sleep-score-pouring");
+    window.setTimeout(function () {
+      stage.classList.remove("sleep-score-pouring");
+      callback();
+    }, POUR_ANIM_MS);
+  }
+
+  function flashBottle() {
+    var bottle = id("bottle");
+    if (!bottle) return;
+    bottle.classList.remove("sleep-score-bottle-fill-flash");
+    void bottle.offsetWidth;
+    bottle.classList.add("sleep-score-bottle-fill-flash");
+  }
+
   function getAdvice(quality) {
     if (quality >= 65) {
       return {
@@ -160,6 +201,7 @@
 
     KEYS.forEach(updatePotion);
     updateBottleLayers();
+    syncPourStreams();
 
     var btn = id("btn-pour");
     var output = id("output");
@@ -170,23 +212,28 @@
 
     if (btn && output) {
       btn.addEventListener("click", function () {
-        updateBottleLayers();
-        var risk = getRiskFromLevels();
-        var quality = 100 - risk;
+        btn.disabled = true;
+        runPourAnimation(function () {
+          updateBottleLayers();
+          flashBottle();
+          var risk = getRiskFromLevels();
+          var quality = 100 - risk;
 
-        if (starWrap && starChar) {
-          var size = 24 + (quality / 100) * 80;
-          starWrap.style.fontSize = size + "px";
-          starChar.textContent = "★";
-        }
-        if (qualityText) qualityText.textContent = "Sleep quality: " + quality + "%";
+          if (starWrap && starChar) {
+            var size = 24 + (quality / 100) * 80;
+            starWrap.style.fontSize = size + "px";
+            starChar.textContent = "★";
+          }
+          if (qualityText) qualityText.textContent = "Sleep quality: " + quality + "%";
 
-        var advice = getAdvice(quality);
-        if (adviceEl) {
-          adviceEl.innerHTML = advice.main + "<div class=\"sleep-score-tip\">" + advice.tip + "</div>";
-        }
+          var advice = getAdvice(quality);
+          if (adviceEl) {
+            adviceEl.innerHTML = advice.main + "<div class=\"sleep-score-tip\">" + advice.tip + "</div>";
+          }
 
-        output.hidden = false;
+          output.hidden = false;
+          btn.disabled = false;
+        });
       });
     }
   }

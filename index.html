@@ -27,35 +27,56 @@
   <main>
     <section id="home" class="panel hero bg-hero">
       <div class="container hero-grid">
-        <div class="hero-copy reveal">
+        <div class="hero-card hero-cycle-card reveal">
           <p class="kicker">CSC316 Final Project</p>
           <h1>A Student’s Sleep Cycle</h1>
-          <p class="subhead">
+          <p class="subhead hero-cycle-sub">
             A visual data story about how weekday sleep loss, coffee, sedentary routines,
             nighttime habits, body balance, and small behavioral shifts shape student sleep.
           </p>
 
-          <div class="cta-row">
-            <a class="btn primary" href="#panel1">Start the story</a>
+          <div class="cycle-wheel" aria-label="Eight stages of the sleep cycle story">
+            <a class="cycle-node" style="--i:0" href="#panel1" aria-label="Stage 1: Weekday shortage">
+              <img src="assets/images/panel-1-monday.jpg" alt="Stage 1 preview" />
+              <span>1</span>
+            </a>
+            <a class="cycle-node" style="--i:1" href="#panel2" aria-label="Stage 2: Coffee compensation">
+              <img src="assets/images/panel-2-coffee.jpg" alt="Stage 2 preview" />
+              <span>2</span>
+            </a>
+            <a class="cycle-node" style="--i:2" href="#panel3" aria-label="Stage 3: Sedentary routine">
+              <img src="assets/images/panel-3-library.jpg" alt="Stage 3 preview" />
+              <span>3</span>
+            </a>
+            <a class="cycle-node" style="--i:3" href="#panel4" aria-label="Stage 4: Night choices">
+              <img src="assets/images/panel-4-phone.jpg" alt="Stage 4 preview" />
+              <span>4</span>
+            </a>
+            <a class="cycle-node" style="--i:4" href="#panel5" aria-label="Stage 5: BMI imbalance">
+              <img src="assets/images/panel-5-grass.jpg" alt="Stage 5 preview" />
+              <span>5</span>
+            </a>
+            <a class="cycle-node" style="--i:5" href="#panel6" aria-label="Stage 6: Behavior loop">
+              <img src="assets/images/panel-6-sleep.jpg" alt="Stage 6 preview" />
+              <span>6</span>
+            </a>
+            <a class="cycle-node" style="--i:6" href="#panel7" aria-label="Stage 7: Behavioral balance">
+              <img src="assets/images/panel-7-classroom.jpg" alt="Stage 7 preview" />
+              <span>7</span>
+            </a>
+            <a class="cycle-node" style="--i:7" href="#panel8" aria-label="Stage 8: Sleep score simulator">
+              <img src="assets/images/panel-8-run.jpg" alt="Stage 8 preview" />
+              <span>8</span>
+            </a>
+
+            <div class="cycle-core" aria-hidden="true">
+              <a class="btn primary hero-cycle-btn" href="#panel1">Start the story</a>
+            </div>
           </div>
 
-          <p class="tiny">
+          <p class="tiny hero-cycle-tip">
             Scroll the comic panels. Click each image to explore the data behind the scene.
           </p>
-        </div>
-
-        <div class="hero-card reveal">
-          <h3>Story structure</h3>
-          <ul class="checklist">
-            <li>Weekday shortage</li>
-            <li>Coffee compensation</li>
-            <li>Sedentary routine</li>
-            <li>Night choices</li>
-            <li>BMI imbalance</li>
-            <li>Behavior loop</li>
-            <li>Behavioral balance</li>
-            <li>Sleep score simulator</li>
-          </ul>
         </div>
       </div>
     </section>

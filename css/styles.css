@@ -1383,22 +1383,18 @@ p {
 
 .loop-node circle {
   transition: transform 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
-  transform-origin: center;
+  transform-box: fill-box;
+  transform-origin: center center;
 }
 
 .loop-node.is-active circle {
   filter: drop-shadow(0 8px 18px rgba(31,36,48,0.16));
   opacity: 1;
-  transform: scale(1.08);
+  transform: scale(1.12);
 }
 
 .loop-node text {
   pointer-events: none;
-  transition: font-size 0.18s ease;
-}
-
-.loop-node.is-active text {
-  font-size: 15px;
 }
 
 .loop-tooltip {

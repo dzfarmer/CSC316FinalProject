@@ -66,23 +66,19 @@
 
     .loop-node circle {
       transition: transform 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
-      transform-origin: center;
+      transform-box: fill-box;
+      transform-origin: center center;
     }
 
     .loop-node text {
       pointer-events: none;
-      transition: font-size 0.18s ease;
       user-select: none;
     }
 
     .loop-node.is-active circle {
       opacity: 1;
-      transform: scale(1.08);
+      transform: scale(1.12);
       filter: drop-shadow(0 8px 18px rgba(31,36,48,0.18));
-    }
-
-    .loop-node.is-active text {
-      font-size: 15px;
     }
 
     .loop-tooltip {

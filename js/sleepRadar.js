@@ -13,6 +13,28 @@ const RADAR_DIMENSIONS = [
     { key: "income", label: "Income" }
 ];
 
+/** NHANES-style education (DMDEDUC2) and poverty-category notes for cluster labels. */
+const CLUSTER_LEVEL_NOTES = {
+    education: {
+        "1.0": "Less than 9th grade",
+        "2.0": "9–11th grade (incl. 12th, no diploma)",
+        "3.0": "High school graduate / GED or equivalent",
+        "4.0": "Some college or AA degree",
+        "5.0": "College graduate or above"
+    },
+    income: {
+        "1.0": "Lowest income group (vs. poverty threshold)",
+        "2.0": "Lower income group",
+        "3.0": "Lower-middle income group",
+        "4.0": "Upper-middle income group",
+        "5.0": "Highest income group",
+        "Below poverty": "Family income below federal poverty threshold",
+        "Near poverty": "Just above poverty threshold",
+        "Middle income": "Middle range vs. poverty threshold",
+        "Higher income": "Highest income range in fallback groups"
+    }
+};
+
 let radarRows = [];
 let selectedDimension = "education";
 const selectedGroupsByDimension = { education: null, income: null };
@@ -254,6 +276,33 @@ function shortenLabel(label, maxLength = 22) {
     return `${label.slice(0, maxLength - 1)}…`;
 }
 
+function normalizeLevelLookupKey(label) {
+    if (label == null) return null;
+    const s = String(label).trim();
+    if (!s) return null;
+    if (/^-?\d+(\.\d+)?$/.test(s)) {
+        const n = Number(s);
+        if (!Number.isFinite(n)) return s;
+        return Number.isInteger(n) ? `${n}.0` : s;
+    }
+    return s;
+}
+
+function getClusterLevelNote(dimensionKey, label) {
+    const map = CLUSTER_LEVEL_NOTES[dimensionKey];
+    if (!map) return "";
+    const key = normalizeLevelLookupKey(label);
+    if (key && map[key]) return map[key];
+    if (map[label]) return map[label];
+    return "";
+}
+
+function clusterButtonTitle(dimensionKey, label) {
+    const note = getClusterLevelNote(dimensionKey, label);
+    if (!note) return label;
+    return `${label} — ${note}`;
+}
+
 function renderGroupButtons(clusters) {
     const wrap = d3.select("#radarGroupButtons");
     if (wrap.empty()) return;
@@ -270,7 +319,7 @@ function renderGroupButtons(clusters) {
             if (d.key == null) return !selectedGroups || selectedGroups.size === 0;
             return !!selectedGroups?.has(d.key);
         })
-        .attr("title", d => d.label)
+        .attr("title", d => (d.key == null ? d.label : clusterButtonTitle(selectedDimension, d.label)))
         .text(d => shortenLabel(d.label))
         .on("click", (_, d) => {
             if (d.key == null) {
@@ -308,7 +357,9 @@ function renderLegend(clusters, color) {
         enter => {
             const row = enter.append("div").attr("class", "radar-legend-item");
             row.append("span").attr("class", "radar-legend-swatch");
-            row.append("span").attr("class", "radar-legend-text");
+            const text = row.append("span").attr("class", "radar-legend-text");
+            text.append("span").attr("class", "radar-legend-line");
+            text.append("span").attr("class", "radar-legend-note");
             return row;
         },
         update => update,
@@ -318,8 +369,12 @@ function renderLegend(clusters, color) {
     legend.selectAll(".radar-legend-swatch")
         .style("background-color", d => color(d.key));
 
-    legend.selectAll(".radar-legend-text")
+    legend.selectAll(".radar-legend-line")
         .text(d => `${d.label} (n=${d.sample})`);
+
+    legend.selectAll(".radar-legend-note")
+        .text(d => getClusterLevelNote(selectedDimension, d.label))
+        .style("display", d => (getClusterLevelNote(selectedDimension, d.label) ? null : "none"));
 }
 
 function renderRadar() {
@@ -453,10 +508,12 @@ function renderRadar() {
                 const sleepText = Number.isFinite(cluster.avgSleepHours)
                     ? `${cluster.avgSleepHours.toFixed(2)} hrs`
                     : "N/A";
+                const noteHtml = getClusterLevelNote(selectedDimension, cluster.label);
                 tooltip
                     .style("opacity", 1)
                     .html(`
                         <div><strong>Cluster: ${cluster.label}</strong></div>
+                        ${noteHtml ? `<div>${noteHtml}</div>` : ""}
                         <div>Sleep hours: ${sleepText}</div>
                     `)
                     .style("left", `${event.pageX + 14}px`)

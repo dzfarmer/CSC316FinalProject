@@ -146,11 +146,31 @@
 
 #viz5 .radar-legend-item{
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   font-size: 0.82rem;
   color: rgba(61, 44, 38, 0.92);
   font-weight: 700;
+}
+
+#viz5 .radar-legend-text{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+#viz5 .radar-legend-line{
+  display: block;
+}
+
+#viz5 .radar-legend-note{
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(61, 44, 38, 0.72);
+  max-width: 220px;
 }
 
 #viz5 .radar-legend-swatch{

@@ -172,29 +172,48 @@
       ];
 
       const links = [[0,1],[1,2],[2,3],[3,4],[4,0]];
+      const NODE_R = 48;
+      const EDGE_PAD = 14;
+
+      function trimmedQuadPath(s, t) {
+        const cx = (s.x + t.x) / 2;
+        const cy = (s.y + t.y) / 2 - 40;
+        let vx = cx - s.x;
+        let vy = cy - s.y;
+        let len = Math.hypot(vx, vy) || 1;
+        vx /= len;
+        vy /= len;
+        const sx0 = s.x + vx * (NODE_R + EDGE_PAD);
+        const sy0 = s.y + vy * (NODE_R + EDGE_PAD);
+        let wx = t.x - cx;
+        let wy = t.y - cy;
+        len = Math.hypot(wx, wy) || 1;
+        wx /= len;
+        wy /= len;
+        const tx1 = t.x - wx * (NODE_R + EDGE_PAD);
+        const ty1 = t.y - wy * (NODE_R + EDGE_PAD);
+        return `M${sx0},${sy0} Q${cx},${cy} ${tx1},${ty1}`;
+      }
 
       const defs = svg.append("defs");
       defs.append("marker")
         .attr("id", "arrowhead")
+        .attr("markerUnits", "userSpaceOnUse")
         .attr("viewBox", "0 -5 10 10")
         .attr("refX", 9)
         .attr("refY", 0)
-        .attr("markerWidth", 8)
-        .attr("markerHeight", 8)
+        .attr("markerWidth", 14)
+        .attr("markerHeight", 14)
         .attr("orient", "auto")
         .append("path")
         .attr("d", "M0,-5L10,0L0,5")
-        .attr("fill", "#9da6bb");
+        .attr("fill", "#6b768f");
 
       svg.selectAll(".loop-link")
         .data(links)
         .join("path")
         .attr("class", "loop-link")
-        .attr("d", d => {
-          const s = nodes[d[0]];
-          const t = nodes[d[1]];
-          return `M${s.x},${s.y} Q${(s.x + t.x) / 2},${(s.y + t.y) / 2 - 40} ${t.x},${t.y}`;
-        })
+        .attr("d", d => trimmedQuadPath(nodes[d[0]], nodes[d[1]]))
         .attr("fill", "none")
         .attr("stroke", "#9da6bb")
         .attr("stroke-width", 3)

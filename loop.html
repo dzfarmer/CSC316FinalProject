@@ -59,6 +59,60 @@
       height: auto;
       display: block;
     }
+
+    .loop-node {
+      cursor: pointer;
+    }
+
+    .loop-node circle {
+      transition: transform 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
+      transform-origin: center;
+    }
+
+    .loop-node text {
+      pointer-events: none;
+      transition: font-size 0.18s ease;
+      user-select: none;
+    }
+
+    .loop-node.is-active circle {
+      opacity: 1;
+      transform: scale(1.08);
+      filter: drop-shadow(0 8px 18px rgba(31,36,48,0.18));
+    }
+
+    .loop-node.is-active text {
+      font-size: 15px;
+    }
+
+    .loop-tooltip {
+      position: fixed;
+      z-index: 9999;
+      max-width: 250px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(31, 36, 48, 0.96);
+      color: #ffffff;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    .loop-tooltip.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .loop-tooltip strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.96rem;
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
@@ -75,20 +129,50 @@
     </div>
   </div>
 
+  <div id="loopTooltip" class="loop-tooltip" role="tooltip"></div>
+
   <script>
     function renderLoopChart() {
       const svg = d3.select("#loopChart");
+      const tooltip = d3.select("#loopTooltip");
       svg.selectAll("*").remove();
 
-      const width = 960;
-      const height = 420;
-
       const nodes = [
-        { name: "Sleep loss",    x: 180, y: 90,  color: "#7b8cff" },
-        { name: "Coffee",        x: 470, y: 90,  color: "#f5b971" },
-        { name: "Fatigue",       x: 760, y: 180, color: "#ef8a7a" },
-        { name: "Less movement", x: 650, y: 330, color: "#9ac7f0" },
-        { name: "Unstable sleep",x: 290, y: 330, color: "#c3a6e8" }
+        {
+          name: "Sleep loss",
+          x: 180,
+          y: 90,
+          color: "#7b8cff",
+          description: "Weekday sleep shortage often starts the cycle."
+        },
+        {
+          name: "Coffee",
+          x: 470,
+          y: 90,
+          color: "#f5b971",
+          description: "Coffee becomes a quick response to feeling tired."
+        },
+        {
+          name: "Fatigue",
+          x: 760,
+          y: 180,
+          color: "#ef8a7a",
+          description: "Even with compensation, tiredness can still build up."
+        },
+        {
+          name: "Less movement",
+          x: 650,
+          y: 330,
+          color: "#9ac7f0",
+          description: "Fatigue can reduce activity and increase sedentary time."
+        },
+        {
+          name: "Unstable sleep",
+          x: 290,
+          y: 330,
+          color: "#c3a6e8",
+          description: "These habits can feed back into more unstable sleep."
+        }
       ];
 
       const links = [[0,1],[1,2],[2,3],[3,4],[4,0]];
@@ -109,10 +193,11 @@
       svg.selectAll(".loop-link")
         .data(links)
         .join("path")
+        .attr("class", "loop-link")
         .attr("d", d => {
           const s = nodes[d[0]];
           const t = nodes[d[1]];
-          return `M${s.x},${s.y} Q${(s.x+t.x)/2},${(s.y+t.y)/2 - 40} ${t.x},${t.y}`;
+          return `M${s.x},${s.y} Q${(s.x + t.x) / 2},${(s.y + t.y) / 2 - 40} ${t.x},${t.y}`;
         })
         .attr("fill", "none")
         .attr("stroke", "#9da6bb")
@@ -122,6 +207,7 @@
       const g = svg.selectAll(".loop-node")
         .data(nodes)
         .join("g")
+        .attr("class", "loop-node")
         .attr("transform", d => `translate(${d.x},${d.y})`);
 
       g.append("circle")
@@ -138,6 +224,22 @@
         .attr("font-weight", 800)
         .attr("font-size", 14)
         .text(d => d.name);
+
+      g.on("mouseenter", function(event, d) {
+          d3.select(this).classed("is-active", true);
+          tooltip
+            .html(`<strong>${d.name}</strong>${d.description}`)
+            .classed("show", true);
+        })
+        .on("mousemove", function(event) {
+          tooltip
+            .style("left", `${event.clientX + 16}px`)
+            .style("top", `${event.clientY - 10}px`);
+        })
+        .on("mouseleave", function() {
+          d3.select(this).classed("is-active", false);
+          tooltip.classed("show", false);
+        });
     }
 
     renderLoopChart();

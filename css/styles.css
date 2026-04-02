@@ -1376,3 +1376,56 @@ p {
   top: 12px;
   right: 12px;
 }
+
+.loop-node {
+  cursor: pointer;
+}
+
+.loop-node circle {
+  transition: transform 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
+  transform-origin: center;
+}
+
+.loop-node.is-active circle {
+  filter: drop-shadow(0 8px 18px rgba(31,36,48,0.16));
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.loop-node text {
+  pointer-events: none;
+  transition: font-size 0.18s ease;
+}
+
+.loop-node.is-active text {
+  font-size: 15px;
+}
+
+.loop-tooltip {
+  position: fixed;
+  max-width: 240px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(31, 36, 48, 0.95);
+  color: #fff;
+  box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 100;
+}
+
+.loop-tooltip.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.loop-tooltip strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.96rem;
+  color: #fff;
+}

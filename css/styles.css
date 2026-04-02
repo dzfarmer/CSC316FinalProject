@@ -1429,3 +1429,60 @@ p {
   font-size: 0.96rem;
   color: #fff;
 }
+
+.scroll-hint {
+  position: absolute;
+  top: 12px;
+  right: 64px;
+  z-index: 1800;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 12px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.96);
+  color: #4b5565;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+  font-size: 0.84rem;
+  font-weight: 700;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.scroll-hint.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-hint-icon {
+  display: inline-block;
+  font-size: 1rem;
+  line-height: 1;
+  animation: scrollHintBounce 1.2s ease-in-out infinite;
+}
+
+@keyframes scrollHintBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+@media (max-width: 768px) {
+  .scroll-hint {
+    top: 10px;
+    right: 58px;
+    padding: 7px 10px;
+    font-size: 0.76rem;
+    gap: 6px;
+  }
+
+  .scroll-hint-text {
+    display: none;
+  }
+}

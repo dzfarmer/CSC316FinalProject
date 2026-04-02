@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupReveal();
   setupActiveDots();
   setupModalCharts();
+  setupScrollHint();
 });
 
 function setupReveal() {
@@ -64,12 +65,45 @@ function setupActiveDots() {
   });
 }
 
+function setupScrollHint() {
+  const modal = $("#chartModal");
+  const stage = $(".chart-stage");
+  const hint = $("#scrollHint");
+
+  if (!modal || !stage || !hint) return;
+
+  function updateHint() {
+    const isModalOpen = modal.classList.contains("active");
+
+    if (!isModalOpen) {
+      hint.classList.remove("show");
+      return;
+    }
+
+    const canScroll = stage.scrollHeight > stage.clientHeight + 20;
+    const nearBottom = stage.scrollTop + stage.clientHeight >= stage.scrollHeight - 20;
+
+    if (canScroll && !nearBottom) {
+      hint.classList.add("show");
+    } else {
+      hint.classList.remove("show");
+    }
+  }
+
+  stage.addEventListener("scroll", updateHint);
+  window.addEventListener("resize", updateHint);
+
+  window.updateScrollHint = updateHint;
+}
+
 function setupModalCharts() {
   const modal = $("#chartModal");
   const closeBtn = $("#closeModal");
   const chartTitle = $("#chartTitle");
   const chartSubtitle = $("#chartSubtitle");
   const clickablePanels = $$(".clickable");
+  const stage = $(".chart-stage");
+  const hint = $("#scrollHint");
 
   if (!modal || !closeBtn || !chartTitle) return;
 
@@ -98,6 +132,12 @@ function setupModalCharts() {
       modal.classList.add("active");
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
+
+      if (stage) stage.scrollTop = 0;
+
+      setTimeout(() => {
+        if (window.updateScrollHint) window.updateScrollHint();
+      }, 120);
     });
   });
 
@@ -117,6 +157,9 @@ function setupModalCharts() {
     modal.classList.remove("active");
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+
+    if (stage) stage.scrollTop = 0;
+    if (hint) hint.classList.remove("show");
   }
 }
 
@@ -133,6 +176,22 @@ function activateChartPanel(key, chartPanels) {
   const iframe = $(".chart-iframe", activePanel);
   if (iframe && !iframe.getAttribute("src")) {
     const src = iframe.getAttribute("data-src");
-    if (src) iframe.setAttribute("src", src);
+    if (src) {
+      iframe.setAttribute("src", src);
+
+      iframe.addEventListener(
+        "load",
+        () => {
+          setTimeout(() => {
+            if (window.updateScrollHint) window.updateScrollHint();
+          }, 100);
+        },
+        { once: true }
+      );
+    }
+  } else {
+    setTimeout(() => {
+      if (window.updateScrollHint) window.updateScrollHint();
+    }, 100);
   }
 }

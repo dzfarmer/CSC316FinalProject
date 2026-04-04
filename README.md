@@ -44,7 +44,6 @@ To run the project locally:
 - `index.html`  
   Main story page with narrative flow and interactions.
 
----
 
 ### JavaScript
 - `js/main.js`  
@@ -60,7 +59,6 @@ To run the project locally:
 - `js/sleepRadar.js`  
   Behavioral balance radar chart.
 
----
 
 ### Visualization Pages
 Each file is loaded into the modal as an interactive chart:
@@ -74,7 +72,6 @@ Each file is loaded into the modal as an interactive chart:
 - `radar.html`
 - `simulator.html`
 
----
 
 ### Styles
 - `css/styles.css` – main layout and UI  
@@ -83,15 +80,11 @@ Each file is loaded into the modal as an interactive chart:
 - `css/radar.css`  
 - `css/seesaw.css`
 
----
 
 ### Data
 - `data/nhanes_2017_mar2020_sleep_merged_extended_clean_with_caffeine.csv`  
   Main dataset (based on NHANES 2017–March 2020)
-- `project.csv`  
-  Processed dataset used in visualizations
 
----
 
 ### Assets
 - `assets/images/`  

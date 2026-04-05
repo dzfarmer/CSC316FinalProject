@@ -7,7 +7,7 @@
 https://dzfarmer.github.io/CSC316FinalProject
 
 ## Screencast Video
-[Paste your video link here]
+https://utoronto-my.sharepoint.com/:v:/g/personal/haochuan_jiang_mail_utoronto_ca/IQCmA_Uwv9rbQYuIguNOl-yaAaVpcTTgW4Y6M25vXpqfDgU?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=GdK0PJ
 
 ---
 
